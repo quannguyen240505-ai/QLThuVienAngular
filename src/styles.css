@@ -1,0 +1,117 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css');
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #e8eefb;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+/* ===== DARK MODE GLOBAL ===== */
+
+body.dark-theme {
+    background: #020617;
+}
+
+body.dark-theme .page {
+    background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+}
+
+body.dark-theme .sidebar-card,
+body.dark-theme .topbar,
+body.dark-theme .content,
+body.dark-theme .hero-left,
+body.dark-theme .service-panel,
+body.dark-theme .notice-panel,
+body.dark-theme .about-library,
+body.dark-theme .stat-box {
+    background: rgba(15, 23, 42, 0.92);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-theme .topbar-left h2,
+body.dark-theme .brand-name,
+body.dark-theme .hero-left h1,
+body.dark-theme .section-title h2,
+body.dark-theme .service-card h3,
+body.dark-theme .notice-item h4,
+body.dark-theme .about-library h2,
+body.dark-theme .stat-box h3 {
+    color: #f8fafc;
+}
+
+body.dark-theme .topbar-left p,
+body.dark-theme .brand-subtitle,
+body.dark-theme .hero-left p,
+body.dark-theme .section-title p,
+body.dark-theme .service-card p,
+body.dark-theme .notice-item p,
+body.dark-theme .about-library p,
+body.dark-theme .stat-box p {
+    color: #cbd5e1;
+}
+
+body.dark-theme .search-box,
+body.dark-theme .search-area,
+body.dark-theme .dark-mode,
+body.dark-theme .notification-btn {
+    background: rgba(30, 41, 59, 0.95);
+    color: #cbd5e1;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-theme .search-box input,
+body.dark-theme .search-area input {
+    color: #f8fafc;
+}
+
+body.dark-theme .search-box input::placeholder,
+body.dark-theme .search-area input::placeholder {
+    color: #94a3b8;
+}
+
+body.dark-theme .menu-link {
+    color: #cbd5e1;
+}
+
+body.dark-theme .menu-link:hover {
+    background: rgba(99, 102, 241, 0.18);
+    color: #a5b4fc;
+}
+
+body.dark-theme .menu-title {
+    color: #94a3b8;
+}
+
+body.dark-theme .service-card {
+    background: rgba(30, 41, 59, 0.9);
+}
+
+body.dark-theme .service-card:hover {
+    background: rgba(37, 99, 235, 0.18);
+}
+
+body.dark-theme .notice-item {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-theme .user-box {
+    background: rgba(15, 23, 42, 0.95);
+}
+
+body.dark-theme .user-info strong {
+    color: #f8fafc;
+}
+
+body.dark-theme .user-info span {
+    color: #cbd5e1;
+}

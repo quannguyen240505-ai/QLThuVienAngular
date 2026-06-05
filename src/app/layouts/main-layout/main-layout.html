@@ -1,0 +1,53 @@
+<div class="page">
+
+  <aside class="sidebar" [class.collapsed]="isCollapsed">
+    <app-nav-menu
+      [isCollapsed]="isCollapsed"
+      (toggleSidebar)="toggleSidebar()">
+    </app-nav-menu>
+  </aside>
+
+  <main class="main">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <h2>LibraryPro</h2>
+        <p>Nền tảng quản lý thư viện trực tuyến</p>
+      </div>
+
+      <div class="topbar-right">
+        <button class="notification-btn" type="button">
+          <i class="bi bi-bell"></i>
+        </button>
+
+        <div class="user-box" *ngIf="isLoggedIn; else loginButton">
+          <div class="user-avatar">
+            {{ getAvatarText() }}
+          </div>
+
+          <div class="user-info">
+            <strong>{{ username }}</strong>
+            <span>{{ role }}</span>
+          </div>
+
+          <button class="logout-btn" type="button" (click)="logout()">
+            <i class="bi bi-box-arrow-right"></i>
+          </button>
+        </div>
+
+        <ng-template #loginButton>
+          <button class="login-btn" type="button" (click)="goToLogin()">
+            <i class="bi bi-person-circle"></i>
+            <span>Đăng nhập</span>
+          </button>
+        </ng-template>
+      </div>
+    </header>
+
+    <article class="content">
+      <router-outlet></router-outlet>
+    </article>
+
+  </main>
+
+</div>
