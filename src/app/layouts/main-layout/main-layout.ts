@@ -1,7 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
+
 import { NavMenuComponent } from '../../components/nav-menu/nav-menu';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -16,16 +19,27 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   username = '';
   role = '';
 
+  private authSub?: Subscription;
   private tokenInterval?: number;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.loadUserFromLocalStorage();
+
+    this.authSub = this.authService.authState$.subscribe(() => {
+      this.loadUserFromLocalStorage();
+    });
+
     this.startTokenChecker();
   }
 
   ngOnDestroy(): void {
+    this.authSub?.unsubscribe();
+
     if (this.tokenInterval) {
       window.clearInterval(this.tokenInterval);
     }
@@ -40,7 +54,14 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   }
 
   logout(): void {
-    this.clearAuthData();
+     const isConfirmed = window.confirm('Bạn có chắc chắn muốn đăng xuất không?');
+
+    if (!isConfirmed) {
+      return;
+    }
+    
+    this.authService.logout();
+    this.loadUserFromLocalStorage();
     this.router.navigate(['/']);
   }
 
@@ -53,24 +74,15 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   }
 
   private loadUserFromLocalStorage(): void {
-    const token = localStorage.getItem('authToken');
-    const expirationText = localStorage.getItem('tokenExpiration');
+    this.isLoggedIn = this.authService.isLoggedIn();
 
-    if (!token || !expirationText) {
-      this.clearUserState();
-      return;
+    if (this.isLoggedIn) {
+      this.username = this.authService.getUsername();
+      this.role = this.authService.getRole();
+    } else {
+      this.username = '';
+      this.role = '';
     }
-
-    const expiration = new Date(expirationText);
-
-    if (Number.isNaN(expiration.getTime()) || new Date() >= expiration) {
-      this.handleTokenExpired();
-      return;
-    }
-
-    this.username = localStorage.getItem('username') ?? '';
-    this.role = localStorage.getItem('role') ?? '';
-    this.isLoggedIn = true;
   }
 
   private startTokenChecker(): void {
@@ -79,40 +91,12 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         return;
       }
 
-      const expirationText = localStorage.getItem('tokenExpiration');
-
-      if (!expirationText) {
-        this.handleTokenExpired();
-        return;
-      }
-
-      const expiration = new Date(expirationText);
-
-      if (Number.isNaN(expiration.getTime()) || new Date() >= expiration) {
-        this.handleTokenExpired();
+      if (!this.authService.isLoggedIn()) {
+        this.authService.logout();
+        this.loadUserFromLocalStorage();
+        alert('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
+        this.router.navigate(['/login']);
       }
     }, 10000);
-  }
-
-  private handleTokenExpired(): void {
-    this.clearAuthData();
-    alert('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
-    this.router.navigate(['/login']);
-  }
-
-  private clearAuthData(): void {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('username');
-    localStorage.removeItem('gmail');
-    localStorage.removeItem('role');
-    localStorage.removeItem('tokenExpiration');
-
-    this.clearUserState();
-  }
-
-  private clearUserState(): void {
-    this.isLoggedIn = false;
-    this.username = '';
-    this.role = '';
   }
 }
