@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Subscription } from 'rxjs';
+
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -9,7 +12,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './nav-menu.html',
   styleUrl: './nav-menu.css'
 })
-export class NavMenuComponent implements OnInit {
+export class NavMenuComponent implements OnInit, OnDestroy {
   @Input() isCollapsed = false;
   @Output() toggleSidebar = new EventEmitter<void>();
 
@@ -17,7 +20,12 @@ export class NavMenuComponent implements OnInit {
   isLoggedIn = false;
   isDarkMode = false;
 
-  constructor(private router: Router) {}
+  private authSub?: Subscription;
+
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   get isAdmin(): boolean {
     return this.role === 'Admin';
@@ -32,8 +40,54 @@ export class NavMenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.checkLoginStatus();
+    this.loadLoginStatus();
+    this.loadTheme();
 
+    this.authSub = this.authService.authState$.subscribe(() => {
+      this.loadLoginStatus();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.authSub?.unsubscribe();
+  }
+
+  logout(): void {
+     const isConfirmed = window.confirm('Bạn có chắc chắn muốn đăng xuất không?');
+
+    if (!isConfirmed) {
+      return;
+    }
+    this.authService.logout();
+    this.loadLoginStatus();
+    this.router.navigate(['/']);
+  }
+
+  toggleDarkMode(): void {
+    this.isDarkMode = !this.isDarkMode;
+
+    if (this.isDarkMode) {
+      document.body.classList.add('dark-theme');
+      document.documentElement.classList.add('dark-theme');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.body.classList.remove('dark-theme');
+      document.documentElement.classList.remove('dark-theme');
+      localStorage.setItem('theme', 'light');
+    }
+  }
+
+  private loadLoginStatus(): void {
+    this.isLoggedIn = this.authService.isLoggedIn();
+
+    if (this.isLoggedIn) {
+      this.role = this.authService.getRole();
+    } else {
+      this.role = '';
+    }
+  }
+
+  private loadTheme(): void {
     const savedTheme = localStorage.getItem('theme');
 
     if (savedTheme === 'dark') {
@@ -44,59 +98,6 @@ export class NavMenuComponent implements OnInit {
       this.isDarkMode = false;
       document.body.classList.remove('dark-theme');
       document.documentElement.classList.remove('dark-theme');
-    }
-  }
-
-  logout(): void {
-    this.clearAuthData();
-    this.router.navigate(['/']);
-  }
-
-  private checkLoginStatus(): void {
-    const token = localStorage.getItem('authToken');
-    const expirationText = localStorage.getItem('tokenExpiration');
-
-    if (!token || !expirationText) {
-      this.role = '';
-      this.isLoggedIn = false;
-      return;
-    }
-
-    const expiration = new Date(expirationText);
-
-    if (Number.isNaN(expiration.getTime()) || new Date() >= expiration) {
-      this.clearAuthData();
-      return;
-    }
-
-    this.role = localStorage.getItem('role') ?? '';
-    this.isLoggedIn = true;
-  }
-
-  private clearAuthData(): void {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('username');
-    localStorage.removeItem('gmail');
-    localStorage.removeItem('role');
-    localStorage.removeItem('tokenExpiration');
-
-    this.role = '';
-    this.isLoggedIn = false;
-  }
-
-  toggleDarkMode(): void {
-    this.isDarkMode = !this.isDarkMode;
-
-    console.log('Dark mode:', this.isDarkMode);
-
-    if (this.isDarkMode) {
-      document.body.classList.add('dark-theme');
-      document.documentElement.classList.add('dark-theme');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.body.classList.remove('dark-theme');
-      document.documentElement.classList.remove('dark-theme');
-      localStorage.setItem('theme', 'light');
     }
   }
 }
