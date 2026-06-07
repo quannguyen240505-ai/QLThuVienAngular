@@ -7,6 +7,7 @@ import { LoginRequest } from '../models/login-request';
 import { RegisterRequest } from '../models/register-request';
 import { ForgotPasswordRequest } from '../models/forgot-password-request';
 import { ResetPasswordRequest } from '../models/reset-password-request';
+import { ExchangeSocialCodeRequest } from '../models/exchange-social-code-request';
 
 @Injectable({
   providedIn: 'root'
@@ -75,6 +76,12 @@ export class AuthService {
   loginWithGoogle(): void {
     window.location.href = `${this.apiUrl}/google-login`;
   }
+  exchangeSocialCode(data: ExchangeSocialCodeRequest) {
+  return this.http.post<AuthResponse>(
+    `${this.apiUrl}/exchange-social-code`,
+    data
+  );
+}
 
   forgotPassword(data: ForgotPasswordRequest) {
       return this.http.post(`${this.apiUrl}/forgot-password`, data, {

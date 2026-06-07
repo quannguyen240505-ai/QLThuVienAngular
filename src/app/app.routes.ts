@@ -5,6 +5,7 @@ import { LoginComponent } from './pages/login/login';
 import { RegisterComponent } from './pages/register/register';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password';
+import { SocialLoginSuccessComponent } from './pages/social-login-success/social-login-success';
 
 export const routes: Routes = [
   {
@@ -35,6 +36,11 @@ export const routes: Routes = [
         path: 'reset-password',
         component: ResetPasswordComponent,
         title: 'Đặt lại mật khẩu'
+      },
+      {
+        path: 'social-login-success',
+        component: SocialLoginSuccessComponent,
+        title: 'Đang đăng nhập'
       }
     ]
   }

@@ -1,0 +1,18 @@
+<div class="auth-page">
+  <div class="auth-card">
+
+    <div class="auth-header">
+      <div class="auth-icon">
+        <i class="bi bi-google"></i>
+      </div>
+
+      <h1>Đang xử lý đăng nhập</h1>
+      <p>Vui lòng chờ trong giây lát...</p>
+    </div>
+
+    <div class="auth-alert" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+  </div>
+</div>
