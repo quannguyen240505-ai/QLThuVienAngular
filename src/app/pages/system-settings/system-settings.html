@@ -1,0 +1,176 @@
+<section class="system-page">
+
+  <div class="system-header">
+    <div>
+      <div class="system-label">
+        <i class="bi bi-sliders"></i>
+        Quản trị hệ thống
+      </div>
+
+      <h1>Quản lý hệ thống</h1>
+      <p>Cập nhật thông tin thư viện, quy định mượn sách và chính sách vận hành.</p>
+    </div>
+
+    <div class="system-updated">
+      <span>Cập nhật lần cuối</span>
+      <strong>{{ formatDate(currentSetting?.updatedAt) }}</strong>
+    </div>
+  </div>
+
+  <div class="system-alert" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <div class="system-success" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
+  <div class="system-loading" *ngIf="isLoading">
+    <i class="bi bi-arrow-repeat"></i>
+    Đang tải cấu hình hệ thống...
+  </div>
+
+  <form *ngIf="!isLoading" [formGroup]="settingForm" (ngSubmit)="saveSettings()">
+
+    <div class="system-grid">
+
+      <div class="system-card">
+        <div class="card-title">
+          <i class="bi bi-building"></i>
+
+          <div>
+            <h2>Thông tin thư viện</h2>
+            <p>Các thông tin hiển thị cho bạn đọc.</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Tên thư viện</label>
+          <input class="form-control" type="text" formControlName="libraryName" />
+
+          <div class="validation-message"
+               *ngIf="settingForm.get('libraryName')?.touched && settingForm.get('libraryName')?.hasError('required')">
+            Vui lòng nhập tên thư viện.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email liên hệ</label>
+          <input class="form-control" type="email" formControlName="email" />
+
+          <div class="validation-message"
+               *ngIf="settingForm.get('email')?.touched && settingForm.get('email')?.hasError('required')">
+            Vui lòng nhập email liên hệ.
+          </div>
+
+          <div class="validation-message"
+               *ngIf="settingForm.get('email')?.touched && settingForm.get('email')?.hasError('email')">
+            Email không hợp lệ.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Số điện thoại</label>
+          <input class="form-control" type="text" formControlName="phone" />
+        </div>
+
+        <div class="form-group">
+          <label>Địa chỉ</label>
+          <input class="form-control" type="text" formControlName="address" />
+        </div>
+
+        <div class="form-group">
+          <label>Giờ mở cửa</label>
+          <input class="form-control" type="text" formControlName="openingHours" />
+        </div>
+      </div>
+
+      <div class="system-card">
+        <div class="card-title">
+          <i class="bi bi-journal-check"></i>
+
+          <div>
+            <h2>Quy định mượn sách</h2>
+            <p>Thiết lập chính sách mượn, trả và phí phạt.</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Số sách tối đa được mượn</label>
+          <input class="form-control" type="number" formControlName="maxBorrowBooks" />
+
+          <div class="validation-message"
+               *ngIf="settingForm.get('maxBorrowBooks')?.touched && settingForm.get('maxBorrowBooks')?.invalid">
+            Số sách tối đa phải từ 1 đến 50.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Số ngày mượn tối đa</label>
+          <input class="form-control" type="number" formControlName="maxBorrowDays" />
+
+          <div class="validation-message"
+               *ngIf="settingForm.get('maxBorrowDays')?.touched && settingForm.get('maxBorrowDays')?.invalid">
+            Số ngày mượn tối đa phải từ 1 đến 365.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Phí phạt quá hạn mỗi ngày</label>
+          <input class="form-control" type="number" formControlName="overdueFinePerDay" />
+
+          <div class="validation-message"
+               *ngIf="settingForm.get('overdueFinePerDay')?.touched && settingForm.get('overdueFinePerDay')?.invalid">
+            Phí phạt không hợp lệ.
+          </div>
+        </div>
+
+        <div class="system-toggle-box">
+          <div>
+            <h3>Cho phép gửi yêu cầu mượn</h3>
+            <p>Bật/tắt chức năng gửi yêu cầu mượn sách từ người dùng.</p>
+          </div>
+
+          <label class="system-switch">
+            <input type="checkbox" formControlName="allowBorrowRequest" />
+            <span></span>
+          </label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="system-card rules-card">
+      <div class="card-title">
+        <i class="bi bi-file-earmark-text"></i>
+
+        <div>
+          <h2>Nội quy thư viện</h2>
+          <p>Nội dung quy định hiển thị cho bạn đọc.</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Nội quy</label>
+        <textarea
+          class="form-control textarea"
+          formControlName="libraryRules">
+        </textarea>
+      </div>
+    </div>
+
+    <div class="system-actions">
+      <button class="system-secondary-btn" type="button" (click)="resetForm()">
+        <i class="bi bi-arrow-counterclockwise"></i>
+        Khôi phục
+      </button>
+
+      <button class="system-primary-btn" type="submit" [disabled]="isSaving">
+        <i class="bi bi-save"></i>
+        {{ isSaving ? 'Đang lưu...' : 'Lưu thay đổi' }}
+      </button>
+    </div>
+
+  </form>
+
+</section>

@@ -1,0 +1,130 @@
+<section class="library-info-page">
+
+  <div class="library-info-hero">
+    <div>
+      <div class="library-info-label">
+        <i class="bi bi-info-circle"></i>
+        Thông tin thư viện
+      </div>
+
+      <h1>{{ setting?.libraryName || 'Thư viện Đại học' }}</h1>
+
+      <p>
+        Cập nhật thông tin liên hệ, thời gian hoạt động và chính sách sử dụng thư viện.
+      </p>
+    </div>
+
+    <div
+      class="library-status"
+      [ngClass]="setting?.allowBorrowRequest ? 'open' : 'closed'">
+      <i class="bi" [ngClass]="setting?.allowBorrowRequest ? 'bi-check-circle' : 'bi-x-circle'"></i>
+
+      <div>
+        <span>Trạng thái yêu cầu mượn</span>
+        <strong>{{ setting?.allowBorrowRequest ? 'Đang mở' : 'Tạm đóng' }}</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="library-info-alert" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <div class="library-info-loading" *ngIf="isLoading">
+    <i class="bi bi-arrow-repeat"></i>
+    Đang tải thông tin thư viện...
+  </div>
+
+  <ng-container *ngIf="!isLoading && setting">
+
+    <div class="library-info-grid">
+
+      <div class="library-info-card">
+        <div class="card-title">
+          <i class="bi bi-building"></i>
+
+          <div>
+            <h2>Thông tin liên hệ</h2>
+            <p>Dữ liệu liên hệ chính thức của thư viện.</p>
+          </div>
+        </div>
+
+        <div class="info-list">
+          <div class="info-item">
+            <span>Tên thư viện</span>
+            <strong>{{ setting.libraryName }}</strong>
+          </div>
+
+          <div class="info-item">
+            <span>Email</span>
+            <strong>{{ setting.email }}</strong>
+          </div>
+
+          <div class="info-item">
+            <span>Số điện thoại</span>
+            <strong>{{ setting.phone || 'Chưa cập nhật' }}</strong>
+          </div>
+
+          <div class="info-item">
+            <span>Địa chỉ</span>
+            <strong>{{ setting.address || 'Chưa cập nhật' }}</strong>
+          </div>
+
+          <div class="info-item">
+            <span>Giờ mở cửa</span>
+            <strong>{{ setting.openingHours || 'Chưa cập nhật' }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="library-info-card">
+        <div class="card-title">
+          <i class="bi bi-journal-check"></i>
+
+          <div>
+            <h2>Chính sách mượn sách</h2>
+            <p>Các quy định cơ bản khi sử dụng dịch vụ mượn sách.</p>
+          </div>
+        </div>
+
+        <div class="policy-grid">
+          <div class="policy-box">
+            <span>Sách tối đa</span>
+            <strong>{{ setting.maxBorrowBooks }}</strong>
+            <small>quyển / lượt</small>
+          </div>
+
+          <div class="policy-box">
+            <span>Ngày mượn tối đa</span>
+            <strong>{{ setting.maxBorrowDays }}</strong>
+            <small>ngày</small>
+          </div>
+
+          <div class="policy-box full">
+            <span>Phí phạt quá hạn</span>
+            <strong>{{ formatMoney(setting.overdueFinePerDay) }}</strong>
+            <small>mỗi ngày</small>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="library-info-card rules-card">
+      <div class="card-title">
+        <i class="bi bi-file-text"></i>
+
+        <div>
+          <h2>Nội quy thư viện</h2>
+          <p>Các quy định bạn đọc cần tuân thủ khi sử dụng thư viện.</p>
+        </div>
+      </div>
+
+      <div class="rules-content">
+        <p>{{ setting.libraryRules || 'Chưa cập nhật nội quy thư viện.' }}</p>
+      </div>
+    </div>
+
+  </ng-container>
+
+</section>
