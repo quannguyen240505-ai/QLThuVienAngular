@@ -6,6 +6,9 @@ import { RegisterComponent } from './pages/register/register';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password';
 import { SocialLoginSuccessComponent } from './pages/social-login-success/social-login-success';
+import { AccountsComponent } from './pages/accounts/accounts';
+import { SystemSettingsComponent } from './pages/system-settings/system-settings';
+import { LibraryInfoComponent } from './pages/library-info/library-info';
 
 export const routes: Routes = [
   {
@@ -41,6 +44,21 @@ export const routes: Routes = [
         path: 'social-login-success',
         component: SocialLoginSuccessComponent,
         title: 'Đang đăng nhập'
+      },
+      {
+         path: 'accounts',
+        component: AccountsComponent,
+        title: 'Quản lý tài khoản'
+      },
+      {
+        path: 'system',
+        component: SystemSettingsComponent,
+        title: 'Quản lý hệ thống'
+      },
+      {
+        path: 'library-info',
+        component: LibraryInfoComponent,
+        title: 'Thông tin thư viện'
       }
     ]
   }

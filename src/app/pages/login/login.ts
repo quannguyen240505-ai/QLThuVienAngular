@@ -52,8 +52,19 @@ export class LoginComponent {
         this.isLoading = false;
         this.router.navigate(['/']);
       },
-      error: () => {
-        this.errorMessage = 'Tên đăng nhập hoặc mật khẩu không đúng.';
+      error: (err) => {
+        console.log('LOGIN ERROR:', err);
+
+        if (err.error && typeof err.error === 'string') {
+          this.errorMessage = err.error;
+        } else if (err.status === 0) {
+          this.errorMessage = 'Không kết nối được tới API. Kiểm tra API hoặc CORS.';
+        } else if (err.status === 400 || err.status === 401) {
+          this.errorMessage = 'Tên đăng nhập hoặc mật khẩu không đúng.';
+        } else {
+          this.errorMessage = `Lỗi đăng nhập: ${err.status}`;
+        }
+
         this.isLoading = false;
       }
     });
