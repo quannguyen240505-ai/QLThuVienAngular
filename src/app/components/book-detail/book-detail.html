@@ -1,0 +1,58 @@
+<div class="book-detail-container">
+    <button class="btn-back" (click)="goBack()">← Quay lại danh sách</button>
+
+    <div *ngIf="loading" class="loading">Đang tải...</div>
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+
+    <div *ngIf="!loading && !error && book" class="book-detail-layout">
+        <!-- Ảnh bên trái -->
+        <div class="book-cover-col">
+            <div class="book-cover-frame">
+                <img *ngIf="book.coverImageUrl" [src]="book.coverImageUrl" alt="Book cover">
+                <div *ngIf="!book.coverImageUrl" class="no-image">📖</div>
+            </div>
+        </div>
+
+        <!-- Thông tin bên phải -->
+        <div class="book-info-col">
+            <h1 class="book-title">{{ book.title }}</h1>
+            <p class="book-author">{{ book.author }}</p>
+
+            <div class="info-table">
+                <div class="info-row">
+                    <div class="info-label">NHÀ XUẤT BẢN</div>
+                    <div class="info-value">{{ book.publisher || 'Chưa có' }}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">NĂM XUẤT BẢN</div>
+                    <div class="info-value">{{ book.publishYear || 'Chưa có' }}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">THỂ LOẠI</div>
+                    <div class="info-value">{{ book.category || 'Chưa phân loại' }}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">ISBN</div>
+                    <div class="info-value">{{ book.isbn || 'Chưa có' }}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">SỐ LƯỢNG</div>
+                    <div class="info-value">{{ book.totalCopies }} cuốn (còn {{ book.availableCopies }})</div>
+                </div>
+                <div class="info-row" *ngIf="book.description">
+                    <div class="info-label">MÔ TẢ</div>
+                    <div class="info-value">{{ book.description }}</div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button *ngIf="!authService.isLoggedIn()" class="btn btn-primary" (click)="borrowBook()">Đăng nhập để
+                    mượn</button>
+                <button *ngIf="authService.isLoggedIn() && book.availableCopies > 0" class="btn btn-success"
+                    (click)="borrowBook()">Mượn sách</button>
+                <button *ngIf="authService.isLoggedIn() && book.availableCopies === 0" class="btn btn-secondary"
+                    disabled>Hết sách</button>
+            </div>
+        </div>
+    </div>
+</div>

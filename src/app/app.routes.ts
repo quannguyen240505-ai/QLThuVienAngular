@@ -9,6 +9,9 @@ import { SocialLoginSuccessComponent } from './pages/social-login-success/social
 import { AccountsComponent } from './pages/accounts/accounts';
 import { SystemSettingsComponent } from './pages/system-settings/system-settings';
 import { LibraryInfoComponent } from './pages/library-info/library-info';
+import { BooksComponent } from './components/book/book';
+import { BookDetailComponent } from './components/book-detail/book-detail';
+import { SearchBooksComponent } from './components/search-books/search-books';
 
 export const routes: Routes = [
   {
@@ -20,7 +23,7 @@ export const routes: Routes = [
         component: HomeComponent,
         title: 'Thư viện Đại học - QNU'
       },
-       {
+      {
         path: 'login',
         component: LoginComponent,
         title: 'Đăng nhập'
@@ -46,7 +49,7 @@ export const routes: Routes = [
         title: 'Đang đăng nhập'
       },
       {
-         path: 'accounts',
+        path: 'accounts',
         component: AccountsComponent,
         title: 'Quản lý tài khoản'
       },
@@ -59,7 +62,22 @@ export const routes: Routes = [
         path: 'library-info',
         component: LibraryInfoComponent,
         title: 'Thông tin thư viện'
-      }
+      },
+      {
+        path: 'books',
+        component: BooksComponent,
+        title: 'Danh sách sách'
+      },
+      {
+        path: 'books/:id',
+        component: BookDetailComponent,
+        title: 'Chi tiết sách'
+      },
+      {
+        path: 'search-books',
+        component: SearchBooksComponent,
+        title: 'Tìm kiếm sách'
+      },
     ]
   }
 ];
