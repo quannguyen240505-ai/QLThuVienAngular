@@ -1,0 +1,168 @@
+.reader-page {
+  padding: 28px;
+  min-height: 100vh;
+}
+
+.reader-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.reader-header h1 {
+  font-size: 34px;
+  font-weight: 900;
+  margin: 0;
+  color: #111827;
+}
+
+.reader-header p {
+  color: #6b7280;
+  margin-top: 6px;
+}
+
+.add-btn {
+  background: #0d6efd;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  box-shadow: 0 10px 24px rgba(13, 110, 253, 0.25);
+}
+
+.reader-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: white;
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.06);
+}
+
+.stat-card span {
+  color: #6b7280;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.stat-card strong {
+  font-size: 30px;
+  color: #0d6efd;
+}
+
+.reader-toolbar {
+  display: flex;
+  gap: 12px;
+  background: white;
+  padding: 18px;
+  border-radius: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.06);
+}
+
+.reader-toolbar input {
+  flex: 1;
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  padding: 13px 16px;
+  outline: none;
+}
+
+.reader-toolbar button {
+  border: none;
+  background: #6c757d;
+  color: white;
+  border-radius: 10px;
+  padding: 0 20px;
+  font-weight: 700;
+}
+
+.reader-toolbar .reset-btn {
+  background: white;
+  color: #6c757d;
+  border: 1px solid #cbd5e1;
+}
+
+.reader-table-wrapper {
+  background: white;
+  border-radius: 18px;
+  overflow: auto;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.07);
+}
+
+.reader-table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.reader-table-wrapper th {
+  background: #0d6efd;
+  color: white;
+  padding: 16px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.reader-table-wrapper td {
+  padding: 16px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #111827;
+}
+
+.name-cell {
+  font-weight: 800;
+}
+
+.status {
+  background: #198754;
+  color: white;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.status.inactive {
+  background: #dc3545;
+}
+
+.action-cell {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-btn,
+.delete-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.edit-btn {
+  background: #ffc107;
+  color: #111827;
+}
+
+.delete-btn {
+  background: #dc3545;
+  color: white;
+}
+
+@media (max-width: 900px) {
+  .reader-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .reader-toolbar {
+    flex-direction: column;
+  }
+}

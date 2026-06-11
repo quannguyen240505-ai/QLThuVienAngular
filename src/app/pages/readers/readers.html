@@ -1,0 +1,81 @@
+<section class="reader-page">
+  <div class="reader-header">
+    <div>
+      <h1>📚 Quản lý độc giả</h1>
+      <p>Danh sách độc giả trong hệ thống thư viện</p>
+    </div>
+
+    <a routerLink="/readers/create" class="add-btn">
+      + Thêm độc giả
+    </a>
+  </div>
+
+  <div class="reader-stats">
+    <div class="stat-card">
+      <span>Tổng độc giả</span>
+      <strong>{{ readers.length }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Đang hoạt động</span>
+      <strong>{{ activeCount }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Ngưng hoạt động</span>
+      <strong>{{ inactiveCount }}</strong>
+    </div>
+  </div>
+
+  <div class="reader-toolbar">
+    <input
+      type="text"
+      placeholder="Tìm kiếm theo tên, email, SĐT, địa chỉ..."
+      [(ngModel)]="keyword"
+    />
+
+    <button (click)="search()">Tìm kiếm</button>
+    <button class="reset-btn" (click)="loadReaders()">Làm mới</button>
+  </div>
+
+  <div class="reader-table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Họ tên</th>
+          <th>Giới tính</th>
+          <th>Ngày sinh</th>
+          <th>SĐT</th>
+          <th>Email</th>
+          <th>Địa chỉ</th>
+          <th>Ngày tạo</th>
+          <th>Trạng thái</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (reader of readers; track reader.readerId) {
+          <tr>
+            <td class="name-cell">{{ reader.fullName || 'Chưa cập nhật' }}</td>
+            <td>{{ reader.gender || 'Chưa có' }}</td>
+            <td>{{ reader.dateOfBirth ? (reader.dateOfBirth | date:'dd/MM/yyyy') : 'Chưa có' }}</td>
+            <td>{{ reader.phone || 'Chưa có' }}</td>
+            <td>{{ reader.email || 'Chưa có' }}</td>
+            <td>{{ reader.address || 'Chưa có' }}</td>
+            <td>{{ reader.createdDate ? (reader.createdDate | date:'dd/MM/yyyy') : 'Chưa có' }}</td>
+            <td>
+              <span class="status" [class.inactive]="reader.status !== 'Active'">
+                {{ reader.status === 'Active' ? 'Hoạt động' : 'Ngừng' }}
+              </span>
+            </td>
+            <td class="action-cell">
+              <a [routerLink]="['/readers/edit', reader.readerId]" class="edit-btn">Sửa</a>
+              <button class="delete-btn" (click)="deleteReader(reader.readerId)">Xóa</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
