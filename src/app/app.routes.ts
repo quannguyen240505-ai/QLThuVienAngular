@@ -27,7 +27,7 @@ export const routes: Routes = [
         component: HomeComponent,
         title: 'Thư viện Đại học - QNU'
       },
-       {
+      {
         path: 'login',
         component: LoginComponent,
         title: 'Đăng nhập'
@@ -53,7 +53,7 @@ export const routes: Routes = [
         title: 'Đang đăng nhập'
       },
       {
-         path: 'accounts',
+        path: 'accounts',
         component: AccountsComponent,
         title: 'Quản lý tài khoản'
       },

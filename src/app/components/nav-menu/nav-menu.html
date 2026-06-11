@@ -31,7 +31,7 @@
       <span>Trang chủ</span>
     </a>
 
-    <a class="menu-link" routerLink="/books" routerLinkActive="active">
+    <a class="menu-link" routerLink="/books" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
       <i class="bi bi-book"></i>
       <span>Danh sách sách</span>
     </a>
@@ -41,10 +41,10 @@
       <span>Tìm kiếm sách</span>
     </a>
 
-    <a class="menu-link" routerLink="/book-detail" routerLinkActive="active">
+    <div class="menu-link" [class.active]="isBookDetailRoute()">
       <i class="bi bi-info-circle"></i>
       <span>Thông tin sách</span>
-    </a>
+    </div>
 
     <a class="menu-link" routerLink="/library-info" routerLinkActive="active">
       <i class="bi bi-info-square"></i>
@@ -135,17 +135,14 @@
     </button>
 
     <div class="dark-mode">
-        <div>
-            <i class="bi bi-moon"></i>
-            <span>Dark Mode</span>
-        </div>
-        <label class="switch">
-            <input
-                type="checkbox"
-                [checked]="isDarkMode"
-                (change)="toggleDarkMode()" />
-            <span></span>
-        </label>
+      <div>
+        <i class="bi bi-moon"></i>
+        <span>Dark Mode</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" [checked]="isDarkMode" (change)="toggleDarkMode()" />
+        <span></span>
+      </label>
     </div>
   </div>
 </div>

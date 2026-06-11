@@ -25,7 +25,7 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private authService: AuthService
-  ) {}
+  ) { }
 
   get isAdmin(): boolean {
     return this.role === 'Admin';
@@ -37,6 +37,10 @@ export class NavMenuComponent implements OnInit, OnDestroy {
 
   get isMemberOrHigher(): boolean {
     return this.role === 'Member' || this.role === 'Librarian' || this.role === 'Admin';
+  }
+  isBookDetailRoute(): boolean {
+    // Kiểm tra nếu route hiện tại bắt đầu bằng /books/ và không phải chính xác /books
+    return this.router.url.startsWith('/books/') && this.router.url !== '/books';
   }
 
   ngOnInit(): void {
@@ -53,7 +57,7 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   }
 
   logout(): void {
-     const isConfirmed = window.confirm('Bạn có chắc chắn muốn đăng xuất không?');
+    const isConfirmed = window.confirm('Bạn có chắc chắn muốn đăng xuất không?');
 
     if (!isConfirmed) {
       return;

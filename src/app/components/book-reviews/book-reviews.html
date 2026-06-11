@@ -1,0 +1,40 @@
+<div class="reviews-section">
+    <h4>📝 Đánh giá & Bình luận</h4>
+
+    <!-- Hiển thị điểm trung bình -->
+    <div class="average-rating">
+        <span>⭐ Đánh giá trung bình: {{ averageRating | number:'1.1-1' }}/5 ({{ reviews.length }} lượt)</span>
+    </div>
+
+    <!-- Form gửi đánh giá (chỉ hiện khi đã đăng nhập) -->
+    <div *ngIf="authService.isLoggedIn(); else loginPrompt" class="review-form">
+        <div class="star-rating">
+            <span>Chọn số sao: </span>
+            <span *ngFor="let star of [1,2,3,4,5]" (click)="setRating(star)" [class.filled]="star <= newRating">★</span>
+        </div>
+        <textarea [(ngModel)]="newComment" rows="3" placeholder="Chia sẻ cảm nhận của bạn về cuốn sách..."></textarea>
+        <button (click)="submitReview()" [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Đang gửi...' : 'Gửi đánh giá' }}
+        </button>
+    </div>
+    <ng-template #loginPrompt>
+        <div class="login-prompt">
+            <p><a routerLink="/login">Đăng nhập</a> để đánh giá và bình luận sách.</p>
+        </div>
+    </ng-template>
+
+    <!-- Danh sách đánh giá đã được duyệt -->
+    <div *ngIf="!isLoading" class="reviews-list">
+        <div *ngFor="let review of reviews" class="review-item">
+            <div class="review-header">
+                <strong>{{ review.userName || 'Người dùng' }}</strong>
+                <span class="rating">⭐ {{ review.rating }}/5</span>
+                <span class="date">{{ review.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+            <div class="review-comment">{{ review.comment }}</div>
+        </div>
+        <div *ngIf="reviews.length === 0" class="no-reviews">
+            Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá!
+        </div>
+    </div>
+</div>

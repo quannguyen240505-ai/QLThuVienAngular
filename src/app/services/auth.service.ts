@@ -18,7 +18,7 @@ export class AuthService {
   private authStateSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
   authState$ = this.authStateSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(data: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data);
@@ -34,7 +34,6 @@ export class AuthService {
     localStorage.setItem('gmail', result.gmail);
     localStorage.setItem('role', result.role);
     localStorage.setItem('tokenExpiration', result.expiration);
-
     this.authStateSubject.next(true);
   }
 
@@ -44,24 +43,15 @@ export class AuthService {
     localStorage.removeItem('gmail');
     localStorage.removeItem('role');
     localStorage.removeItem('tokenExpiration');
-
     this.authStateSubject.next(false);
   }
 
   isLoggedIn(): boolean {
     const token = localStorage.getItem('authToken');
     const expirationText = localStorage.getItem('tokenExpiration');
-
-    if (!token || !expirationText) {
-      return false;
-    }
-
+    if (!token || !expirationText) return false;
     const expiration = new Date(expirationText);
-
-    if (Number.isNaN(expiration.getTime()) || new Date() >= expiration) {
-      return false;
-    }
-
+    if (isNaN(expiration.getTime()) || new Date() >= expiration) return false;
     return true;
   }
 
@@ -73,25 +63,36 @@ export class AuthService {
     return localStorage.getItem('role') ?? '';
   }
 
+  getCurrentUser(): { username: string; gmail: string; role: string } | null {
+    if (!this.isLoggedIn()) return null;
+    return {
+      username: this.getUsername(),
+      gmail: localStorage.getItem('gmail') ?? '',
+      role: this.getRole()
+    };
+  }
+
+  hasRole(role: string): boolean {
+    const userRole = this.getRole();
+    return userRole === role;
+  }
+
   loginWithGoogle(): void {
     window.location.href = `${this.apiUrl}/google-login`;
   }
-  exchangeSocialCode(data: ExchangeSocialCodeRequest) {
-  return this.http.post<AuthResponse>(
-    `${this.apiUrl}/exchange-social-code`,
-    data
-  );
-}
 
-  forgotPassword(data: ForgotPasswordRequest) {
-      return this.http.post(`${this.apiUrl}/forgot-password`, data, {
-      responseType: 'text'
-    });
+  exchangeSocialCode(data: ExchangeSocialCodeRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/exchange-social-code`, data);
   }
 
-  resetPassword(data: ResetPasswordRequest) {
-      return this.http.post(`${this.apiUrl}/reset-password`, data, {
-      responseType: 'text'
-    });
+  forgotPassword(data: ForgotPasswordRequest): Observable<any> {
+    return this.http.post(`${this.apiUrl}/forgot-password`, data, { responseType: 'text' });
+  }
+
+  resetPassword(data: ResetPasswordRequest): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reset-password`, data, { responseType: 'text' });
+  }
+  getToken(): string | null {
+    return localStorage.getItem('authToken');
   }
 }
