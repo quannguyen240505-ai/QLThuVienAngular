@@ -1,66 +1,82 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { BorrowRequest } from '../models/borrow';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BorrowService {
-  private readonly apiUrl = 'https://localhost:7067/api/Borrow';
-
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
+  private apiUrl = 'https://localhost:7067/api/Borrow';
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem('authToken') ?? '';
 
     return new HttpHeaders({
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
     });
   }
 
-  sendBorrowRequest(data: any) {
+  sendBorrowRequest(data: BorrowRequest): Observable<any> {
     return this.http.post(`${this.apiUrl}/request`, data, {
       headers: this.getHeaders()
     });
   }
 
-  getHistory() {
-    return this.http.get(`${this.apiUrl}/history`, {
+  getBorrowHistory(): Observable<any[]> {
+    const role = localStorage.getItem('role') ?? '';
+
+    if (role === 'Admin' || role === 'Librarian') {
+      return this.http.get<any[]>(`${this.apiUrl}/history`, {
+        headers: this.getHeaders()
+      });
+    }
+
+    return this.http.get<any[]>(`${this.apiUrl}/my-history`, {
       headers: this.getHeaders()
     });
   }
 
-  getMyBorrowing() {
-    return this.http.get(`${this.apiUrl}/my-borrowing`, {
+  getAllBorrowHistory(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/history`, {
       headers: this.getHeaders()
     });
   }
 
-  memberReturn(id: number) {
-    return this.http.put(`${this.apiUrl}/${id}/member-return`, null, {
+  getMyBorrowHistory(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/my-history`, {
       headers: this.getHeaders()
     });
   }
 
-  getAllBorrows() {
-    return this.http.get(`${this.apiUrl}/history`, {
+  approveBorrow(ticketId: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${ticketId}/approve`, null, {
       headers: this.getHeaders()
     });
   }
 
-  approveBorrow(id: number) {
-    return this.http.put(`${this.apiUrl}/${id}/approve`, null, {
+  returnBook(ticketId: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${ticketId}/return`, null, {
       headers: this.getHeaders()
     });
   }
 
-  returnBook(id: number) {
-    return this.http.put(`${this.apiUrl}/${id}/return`, null, {
+  getMyBorrowing(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/my-borrowing`, {
       headers: this.getHeaders()
     });
   }
 
-  getOverdueBooks() {
-    return this.http.get(`${this.apiUrl}/overdue`, {
+  memberReturn(ticketId: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${ticketId}/member-return`, null, {
+      headers: this.getHeaders()
+    });
+  }
+
+  getOverdueBooks(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/overdue`, {
       headers: this.getHeaders()
     });
   }
