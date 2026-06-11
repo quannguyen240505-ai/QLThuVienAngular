@@ -1,0 +1,119 @@
+<section class="borrow-request-page">
+  <div class="request-header">
+    <div>
+      <h2>📌 Trạng thái yêu cầu mượn</h2>
+      <p>Theo dõi các yêu cầu mượn sách của bạn</p>
+    </div>
+
+    <button type="button" class="refresh-btn" (click)="loadRequests()">
+      Làm mới
+    </button>
+  </div>
+
+  @if (message) {
+    <div class="message-box">
+      {{ message }}
+    </div>
+  }
+
+  <div class="request-summary">
+    <div class="summary-card pending">
+      <span>Chờ duyệt</span>
+      <strong>{{ pendingCount }}</strong>
+    </div>
+
+    <div class="summary-card borrowing">
+      <span>Đang mượn</span>
+      <strong>{{ borrowingCount }}</strong>
+    </div>
+
+    <div class="summary-card returned">
+      <span>Đã trả</span>
+      <strong>{{ returnedCount }}</strong>
+    </div>
+  </div>
+
+  <div class="request-filter">
+    <button type="button" [class.active]="selectedStatus === 'All'" (click)="setStatus('All')">
+      Tất cả
+    </button>
+
+    <button type="button" [class.active]="selectedStatus === 'Pending'" (click)="setStatus('Pending')">
+      Chờ duyệt
+    </button>
+
+    <button type="button" [class.active]="selectedStatus === 'Borrowing'" (click)="setStatus('Borrowing')">
+      Đang mượn
+    </button>
+
+    <button type="button" [class.active]="selectedStatus === 'Returned'" (click)="setStatus('Returned')">
+      Đã trả
+    </button>
+  </div>
+
+  @if (isLoading) {
+    <div class="loading-box">Đang tải dữ liệu...</div>
+  } @else if (filteredRequests.length === 0) {
+    <div class="empty-box">Bạn chưa có yêu cầu mượn sách nào.</div>
+  } @else {
+    <div class="request-list">
+      @for (item of filteredRequests; track item.borrowTicketId) {
+        <div class="request-card">
+          <div class="request-top">
+            <div>
+              <h5>Phiếu mượn #{{ item.borrowTicketId }}</h5>
+              <span>{{ item.borrowDate | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+
+            <span class="request-status" [ngClass]="getStatusClass(item.status)">
+              {{ getStatusText(item.status) }}
+            </span>
+          </div>
+
+          <div class="request-info">
+            <div>
+              <small>Ngày mượn</small>
+              <strong>{{ item.borrowDate | date:'dd/MM/yyyy' }}</strong>
+            </div>
+
+            <div>
+              <small>Hạn trả</small>
+              <strong>{{ item.dueDate | date:'dd/MM/yyyy' }}</strong>
+            </div>
+
+            <div>
+              <small>Ngày trả</small>
+              <strong>{{ item.returnDate ? (item.returnDate | date:'dd/MM/yyyy') : 'Chưa trả' }}</strong>
+            </div>
+          </div>
+
+          <div class="request-books">
+            <div class="books-title">
+              <strong>Sách trong yêu cầu</strong>
+              <span>{{ item.details.length }} đầu sách</span>
+            </div>
+
+            <div class="books-grid">
+              @for (detail of item.details; track detail.borrowDetailId) {
+                <div class="book-mini-card">
+                  <div class="book-icon">📘</div>
+
+                  <div>
+                    <h6>{{ detail.bookTitle || 'Không rõ sách' }}</h6>
+                    <p>Mã sách #{{ detail.bookId }} · SL: {{ detail.quantity }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+
+          @if (item.note) {
+            <div class="note-box">
+              <strong>Ghi chú:</strong> {{ item.note }}
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</section>
