@@ -9,10 +9,13 @@ import { SocialLoginSuccessComponent } from './pages/social-login-success/social
 import { AccountsComponent } from './pages/accounts/accounts';
 import { SystemSettingsComponent } from './pages/system-settings/system-settings';
 import { LibraryInfoComponent } from './pages/library-info/library-info';
-import { BooksComponent } from './components/book/book';
-import { BookDetailComponent } from './components/book-detail/book-detail';
-import { SearchBooksComponent } from './components/search-books/search-books';
-import { ManageBooksComponent } from './pages/manage-books/manage-books';
+import { Readers } from './pages/readers/readers';
+import { ReaderCreate } from './pages/reader-create/reader-create';
+import { BorrowBook } from './pages/borrow-book/borrow-book';
+import { ReturnBooks } from './pages/return-books/return-books';
+import { BorrowHistory } from './pages/borrow-history/borrow-history';
+import { ManageBorrows } from './pages/manage-borrows/manage-borrows';
+import { OverdueBooks } from './pages/overdue-books/overdue-books';
 
 export const routes: Routes = [
   {
@@ -64,26 +67,47 @@ export const routes: Routes = [
         component: LibraryInfoComponent,
         title: 'Thông tin thư viện'
       },
-      {
-        path: 'books',
-        component: BooksComponent,
-        title: 'Danh sách sách'
+            {
+        path: 'readers',
+        component: Readers,
+        title: 'Quản lý độc giả'
       },
       {
-        path: 'books/:id',
-        component: BookDetailComponent,
-        title: 'Chi tiết sách'
-      },
-      {
-        path: 'search-books',
-        component: SearchBooksComponent,
-        title: 'Tìm kiếm sách'
-      },
-      {
-        path: 'manage-books',
-        component: ManageBooksComponent,
-        title: 'Quản lý sách'
-      }
+      path: 'readers/create',
+      component: ReaderCreate,
+      title: 'Thêm độc giả'
+    },
+    {
+      path: 'readers/edit/:id',
+      component: ReaderCreate,
+      title: 'Cập nhật độc giả'
+    },
+    {
+      path: 'borrow-book',
+      component: BorrowBook,
+      title: 'Lập phiếu mượn'
+    },
+    {
+      path: 'return-books',
+      component: ReturnBooks,
+      title: 'Trả sách'
+    },
+    {
+      path: 'borrow-history',
+      component: BorrowHistory,
+      title: 'Lịch sử mượn/trả'
+    },
+    {
+      path: 'librarian/borrows',
+      component: ManageBorrows,
+      title: 'Duyệt mượn/trả'
+    },
+    {
+      path: 'overdue-books',
+      component: OverdueBooks,
+      title: 'Sách quá hạn'
+    }
+
     ]
   }
 ];

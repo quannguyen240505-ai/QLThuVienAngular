@@ -92,6 +92,20 @@
         <i class="bi bi-exclamation-triangle"></i>
         <span>Sách quá hạn</span>
       </a>
+        <a class="menu-link" routerLink="/statistics" routerLinkActive="active">
+        <i class="bi bi-bar-chart"></i>
+        <span>Thống kê hoạt động</span>
+      </a>
+
+       <a routerLink="/readers" routerLinkActive="active" class="menu-link">
+       <i class="bi bi-people"></i>
+       <span>Danh sách độc giả</span>
+    </a>
+    
+    <a routerLink="/readers/create" routerLinkActive="active" class="menu-link">
+     <i class="bi bi-person-plus"></i>
+     <span>Thêm độc giả</span>
+    </a>
     </ng-container>
 
     <ng-container *ngIf="isAdmin">
@@ -107,11 +121,9 @@
         <span>Quản lý hệ thống</span>
       </a>
 
-      <a class="menu-link" routerLink="/statistics" routerLinkActive="active">
-        <i class="bi bi-bar-chart"></i>
-        <span>Thống kê hoạt động</span>
-      </a>
     </ng-container>
+
+       
 
   </nav>
 
