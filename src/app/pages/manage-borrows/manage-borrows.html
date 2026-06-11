@@ -1,1 +1,136 @@
-<p>manage-borrows works!</p>
+<section class="manage-borrows-page">
+  <div class="manage-borrows-header">
+    <div>
+      <h2>🔄 Duyệt yêu cầu mượn/trả sách</h2>
+      <p>Quản lý phiếu chờ duyệt, đang mượn và đã trả</p>
+    </div>
+
+    <button class="refresh-btn" type="button" (click)="loadBorrows()">
+      Làm mới
+    </button>
+  </div>
+
+  @if (message) {
+    <div class="message-box">
+      {{ message }}
+    </div>
+  }
+
+  <div class="borrow-summary">
+    <div class="summary-card pending">
+      <span>Chờ duyệt</span>
+      <strong>{{ pendingCount }}</strong>
+    </div>
+
+    <div class="summary-card borrowing">
+      <span>Đang mượn</span>
+      <strong>{{ borrowingCount }}</strong>
+    </div>
+
+    <div class="summary-card returned">
+      <span>Đã trả</span>
+      <strong>{{ returnedCount }}</strong>
+    </div>
+  </div>
+
+  <div class="borrow-status-filter">
+    <button type="button" [class.active]="selectedStatus === 'All'" (click)="setStatus('All')">
+      Tất cả
+    </button>
+
+    <button type="button" [class.active]="selectedStatus === 'Pending'" (click)="setStatus('Pending')">
+      Chờ duyệt
+    </button>
+
+    <button type="button" [class.active]="selectedStatus === 'Borrowing'" (click)="setStatus('Borrowing')">
+      Đang mượn
+    </button>
+
+    <button type="button" [class.active]="selectedStatus === 'Returned'" (click)="setStatus('Returned')">
+      Đã trả
+    </button>
+  </div>
+
+  @if (isLoading) {
+    <div class="loading-box">
+      Đang tải dữ liệu...
+    </div>
+  } @else if (filteredBorrows.length === 0) {
+    <div class="empty-box">
+      Không có phiếu mượn nào.
+    </div>
+  } @else {
+    <div class="borrow-card-list">
+      @for (ticket of filteredBorrows; track ticket.borrowTicketId) {
+        <div class="borrow-ticket-card">
+          <div class="ticket-top">
+            <div>
+              <h5>{{ ticket.readerName || 'Không rõ độc giả' }}</h5>
+              <span>Phiếu #{{ ticket.borrowTicketId }}</span>
+            </div>
+
+            <span class="ticket-status" [ngClass]="getStatusClass(ticket.status)">
+              {{ getStatusText(ticket.status) }}
+            </span>
+          </div>
+
+          <div class="ticket-info">
+            <div>
+              <small>Ngày mượn</small>
+              <strong>{{ ticket.borrowDate | date:'dd/MM/yyyy' }}</strong>
+            </div>
+
+            <div>
+              <small>Hạn trả</small>
+              <strong>{{ ticket.dueDate | date:'dd/MM/yyyy' }}</strong>
+            </div>
+
+            <div>
+              <small>Ngày trả</small>
+              <strong>
+                {{ ticket.returnDate ? (ticket.returnDate | date:'dd/MM/yyyy') : 'Chưa trả' }}
+              </strong>
+            </div>
+          </div>
+
+          <div class="ticket-books">
+            <strong>Sách mượn</strong>
+
+            <ul>
+              @for (detail of ticket.details; track detail.borrowDetailId) {
+                <li>
+                  {{ detail.bookTitle || 'Không rõ sách' }}
+                  <span>x{{ detail.quantity }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+
+          @if (ticket.note) {
+            <div class="ticket-note">
+              <strong>Ghi chú:</strong> {{ ticket.note }}
+            </div>
+          }
+
+          <div class="ticket-actions">
+            @if (ticket.status === 'Pending') {
+              <button class="approve-btn" type="button" (click)="approveBorrow(ticket)">
+                Duyệt yêu cầu
+              </button>
+            }
+
+            @if (ticket.status === 'Borrowing') {
+              <button class="return-btn" type="button" (click)="returnBook(ticket)">
+                Xác nhận trả
+              </button>
+            }
+
+            @if (ticket.status === 'Returned') {
+              <span class="done-text">Đã hoàn tất</span>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</section>
