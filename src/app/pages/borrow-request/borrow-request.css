@@ -1,0 +1,277 @@
+.borrow-request-page {
+  min-height: 100vh;
+  padding: 28px;
+  background: #f4f7fb;
+}
+
+.request-header {
+  background: linear-gradient(135deg, #6f42c1, #9775fa);
+  color: white;
+  padding: 26px 30px;
+  border-radius: 22px;
+  margin-bottom: 22px;
+  box-shadow: 0 12px 30px rgba(111, 66, 193, 0.25);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.request-header h2 {
+  margin: 0;
+  font-weight: 900;
+}
+
+.request-header p {
+  margin: 6px 0 0;
+  opacity: 0.9;
+}
+
+.refresh-btn {
+  border: none;
+  background: white;
+  color: #6f42c1;
+  padding: 11px 18px;
+  border-radius: 12px;
+  font-weight: 800;
+}
+
+.message-box {
+  background: #e0f2fe;
+  color: #075985;
+  padding: 14px 18px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  font-weight: 700;
+}
+
+.request-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.summary-card {
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.06);
+}
+
+.summary-card span {
+  display: block;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.summary-card strong {
+  font-size: 30px;
+}
+
+.summary-card.pending strong {
+  color: #d97706;
+}
+
+.summary-card.borrowing strong {
+  color: #0d6efd;
+}
+
+.summary-card.returned strong {
+  color: #198754;
+}
+
+.request-filter {
+  background: white;
+  padding: 14px;
+  border-radius: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+.request-filter button {
+  border: 1px solid #dbe3ef;
+  background: #f8fafc;
+  color: #334155;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.request-filter button.active {
+  background: #6f42c1;
+  color: white;
+  border-color: #6f42c1;
+}
+
+.request-list {
+  display: grid;
+  gap: 18px;
+}
+
+.request-card {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.07);
+}
+
+.request-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.request-top h5 {
+  margin: 0;
+  font-weight: 900;
+  color: #111827;
+}
+
+.request-top span {
+  color: #6b7280;
+}
+
+.request-status {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #856404 !important;
+}
+
+.status-borrowing {
+  background: #cfe2ff;
+  color: #084298 !important;
+}
+
+.status-returned {
+  background: #d1e7dd;
+  color: #0f5132 !important;
+}
+
+.status-other {
+  background: #e9ecef;
+  color: #495057 !important;
+}
+
+.request-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.request-info div {
+  background: #f8f9fa;
+  padding: 14px;
+  border-radius: 14px;
+}
+
+.request-info small {
+  display: block;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.request-info strong {
+  color: #111827;
+}
+
+.request-books {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 14px;
+}
+
+.books-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.books-title strong {
+  color: #111827;
+}
+
+.books-title span {
+  background: #ede9fe;
+  color: #5b21b6;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.book-mini-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.book-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #6f42c1, #9775fa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.book-mini-card h6 {
+  margin: 0;
+  color: #111827;
+  font-weight: 900;
+}
+
+.book-mini-card p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.note-box {
+  margin-top: 14px;
+  color: #495057;
+}
+
+.loading-box,
+.empty-box {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  color: #334155;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .request-summary,
+  .request-info {
+    grid-template-columns: 1fr;
+  }
+
+  .request-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+}

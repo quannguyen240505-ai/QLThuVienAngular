@@ -1,87 +1,87 @@
-<form (ngSubmit)="save()">
+<div class="reader-form-page">
 
-  <div class="form-grid">
+  <div class="page-header">
+    <div>
+      <h2>👤 {{ isEdit ? 'Cập nhật độc giả' : 'Thêm độc giả' }}</h2>
+      <p>Quản lý thông tin độc giả trong hệ thống thư viện</p>
+    </div>
+  </div>
 
-    <div class="form-group">
-      <label>Họ tên</label>
-      <input
-        type="text"
-        name="fullName"
-        [(ngModel)]="reader.fullName"
-        placeholder="Nhập họ tên" />
+  <div class="form-card">
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Họ tên</label>
+        <input
+          type="text"
+          [(ngModel)]="reader.fullName">
+      </div>
+
+      <div class="form-group">
+        <label>Giới tính</label>
+        <select [(ngModel)]="reader.gender">
+          <option value="">Chọn giới tính</option>
+          <option value="Nam">Nam</option>
+          <option value="Nữ">Nữ</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Ngày sinh</label>
+        <input
+          type="date"
+          [(ngModel)]="reader.dateOfBirth">
+      </div>
+
+      <div class="form-group">
+        <label>Số điện thoại</label>
+        <input
+          type="text"
+          [(ngModel)]="reader.phone">
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input
+          type="email"
+          [(ngModel)]="reader.email">
+      </div>
+
+      <div class="form-group">
+        <label>Trạng thái</label>
+        <select [(ngModel)]="reader.status">
+          <option value="Active">Hoạt động</option>
+          <option value="Inactive">Ngưng hoạt động</option>
+        </select>
+      </div>
+
     </div>
 
-    <div class="form-group">
-      <label>Giới tính</label>
-      <select
-        name="gender"
-        [(ngModel)]="reader.gender">
-
-        <option value="">-- Chọn giới tính --</option>
-        <option value="Nam">Nam</option>
-        <option value="Nữ">Nữ</option>
-        <option value="Khác">Khác</option>
-
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Ngày sinh</label>
-      <input
-        type="date"
-        name="dateOfBirth"
-        [(ngModel)]="reader.dateOfBirth" />
-    </div>
-
-    <div class="form-group">
-      <label>Số điện thoại</label>
-      <input
-        type="text"
-        name="phone"
-        [(ngModel)]="reader.phone"
-        placeholder="Nhập số điện thoại" />
-    </div>
-
-    <div class="form-group">
-      <label>Email</label>
-      <input
-        type="email"
-        name="email"
-        [(ngModel)]="reader.email"
-        placeholder="Nhập email" />
-    </div>
-
-    <div class="form-group">
-      <label>Trạng thái</label>
-      <select
-        name="status"
-        [(ngModel)]="reader.status">
-
-        <option value="Active">Hoạt động</option>
-        <option value="Inactive">Ngừng hoạt động</option>
-
-      </select>
-    </div>
-
-    <div class="form-group full">
+    <div class="form-group full-width">
       <label>Địa chỉ</label>
       <textarea
-        rows="4"
-        name="address"
-        [(ngModel)]="reader.address"
-        placeholder="Nhập địa chỉ"></textarea>
+        rows="3"
+        [(ngModel)]="reader.address">
+      </textarea>
+    </div>
+
+    <div class="action-buttons">
+      <button
+        class="save-btn"
+        (click)= "save()">
+
+        💾 {{ isEdit ? 'Cập nhật' : 'Lưu độc giả' }}
+      </button>
+
+      <button
+        class="cancel-btn"
+        routerLink="/readers">
+
+        ↩ Quay lại
+      </button>
     </div>
 
   </div>
 
-  <div class="form-actions">
-    <button type="submit" class="save-btn">
-      {{ isEdit ? 'Cập nhật độc giả' : 'Thêm độc giả' }}
-    </button>
-
-    <a routerLink="/readers" class="cancel-btn">
-      Hủy
-    </a>
-  </div>
-
-</form>
+</div>

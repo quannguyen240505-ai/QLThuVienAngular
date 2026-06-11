@@ -54,17 +54,22 @@
     <ng-container *ngIf="isMemberOrHigher">
       <div class="menu-title">Thành viên</div>
 
-      <a class="menu-link" routerLink="/borrow-request" routerLinkActive="active">
+      <a class="menu-link" routerLink="/borrow-book" routerLinkActive="active">
         <i class="bi bi-send"></i>
         <span>Gửi yêu cầu mượn</span>
       </a>
+
+      <a routerLink="/return-books" routerLinkActive="active" class="menu-link">
+      <i class="bi bi-arrow-return-left"></i>
+      <span>Trả sách</span>
+    </a>
 
       <a class="menu-link" routerLink="/borrow-history" routerLinkActive="active">
         <i class="bi bi-clock-history"></i>
         <span>Lịch sử mượn</span>
       </a>
 
-      <a class="menu-link" routerLink="/request-status" routerLinkActive="active">
+      <a class="menu-link" routerLink="/borrow-request" routerLinkActive="active">
         <i class="bi bi-hourglass-split"></i>
         <span>Trạng thái yêu cầu</span>
       </a>

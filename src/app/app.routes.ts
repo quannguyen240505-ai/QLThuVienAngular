@@ -19,7 +19,8 @@ import { BorrowBook } from './pages/borrow-book/borrow-book';
 import { ReturnBooks } from './pages/return-books/return-books';
 import { BorrowHistory } from './pages/borrow-history/borrow-history';
 import { ManageBorrowsComponent } from './pages/manage-borrows/manage-borrows';
-import { OverdueBooks } from './pages/overdue-books/overdue-books';
+import { BorrowRequestPage } from './pages/borrow-request/borrow-request';
+import { OverdueBooksComponent } from './pages/overdue-books/overdue-books';
 
 export const routes: Routes = [
   {
@@ -128,8 +129,13 @@ export const routes: Routes = [
     },
     {
       path: 'overdue-books',
-      component: OverdueBooks,
+      component: OverdueBooksComponent,
       title: 'Sách quá hạn'
+    }, 
+    {
+      path: 'borrow-request',
+      component: BorrowRequestPage,
+      title: 'Trạng thái yêu cầu mượn'
     }
 
     ]
