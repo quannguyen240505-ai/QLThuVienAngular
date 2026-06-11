@@ -5,11 +5,12 @@ import { Subscription } from 'rxjs';
 import { BookService } from '../../services/book.service';
 import { AuthService } from '../../services/auth.service';
 import { Book } from '../../models/book';
+import { BookReviewsComponent } from '../book-reviews/book-reviews';
 
 @Component({
   selector: 'app-book-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, BookReviewsComponent],
   templateUrl: './book-detail.html',
   styleUrls: ['./book-detail.css']
 })

@@ -34,10 +34,9 @@ export class BooksComponent implements OnInit {
 
   loadBooks(): void {
     this.loading = true;
-    this.cdr.detectChanges();
     this.bookService.getAll().subscribe({
       next: (data) => {
-        this.books = data;
+        this.books = data.sort((a, b) => a.id - b.id);
         this.applyFilter();
         this.loading = false;
         this.cdr.detectChanges();

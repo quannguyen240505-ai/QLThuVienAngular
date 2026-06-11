@@ -12,6 +12,7 @@ import { LibraryInfoComponent } from './pages/library-info/library-info';
 import { BooksComponent } from './components/book/book';
 import { BookDetailComponent } from './components/book-detail/book-detail';
 import { SearchBooksComponent } from './components/search-books/search-books';
+import { ManageBooksComponent } from './pages/manage-books/manage-books';
 
 export const routes: Routes = [
   {
@@ -78,6 +79,11 @@ export const routes: Routes = [
         component: SearchBooksComponent,
         title: 'Tìm kiếm sách'
       },
+      {
+        path: 'manage-books',
+        component: ManageBooksComponent,
+        title: 'Quản lý sách'
+      }
     ]
   }
 ];

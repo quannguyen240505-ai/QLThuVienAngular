@@ -53,6 +53,8 @@
                 <button *ngIf="authService.isLoggedIn() && book.availableCopies === 0" class="btn btn-secondary"
                     disabled>Hết sách</button>
             </div>
+            <!-- Thêm đánh giá và bình luận -->
+            <app-book-reviews [bookId]="book.id"></app-book-reviews>
         </div>
     </div>
 </div>
