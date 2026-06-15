@@ -18,12 +18,16 @@ export class ManageBooksComponent implements OnInit {
   filteredBooks: Book[] = [];
   loading = true;
   searchTerm = '';
+  selectedAuthor = '';
+  selectedCategory = '';
+  authors: string[] = [];
+  categories: string[] = [];
+
   currentPage = 1;
   pageSize = 8;
   totalPages = 1;
   totalBooks = 0;
 
-  // Modal
   showModal = false;
   isEditMode = false;
   currentBook: Book = this.getEmptyBook();
@@ -69,8 +73,8 @@ export class ManageBooksComponent implements OnInit {
     this.loading = true;
     this.bookService.getAll().subscribe({
       next: (data) => {
-        // Sắp xếp theo ID tăng dần
         this.books = data.sort((a, b) => a.id - b.id);
+        this.extractFilters();
         this.applyFilter();
         this.loading = false;
         this.cdr.detectChanges();
@@ -79,25 +83,37 @@ export class ManageBooksComponent implements OnInit {
         console.error('Lỗi tải sách:', err);
         alert('Không thể tải danh sách sách.');
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
-  reloadBooks(): void {
-    this.searchTerm = '';
-    this.currentPage = 1;
-    this.loadBooks();
+  extractFilters(): void {
+    const authorSet = new Set<string>();
+    const categorySet = new Set<string>();
+    this.books.forEach(book => {
+      if (book.author) authorSet.add(book.author);
+      if (book.category) categorySet.add(book.category);
+    });
+    this.authors = Array.from(authorSet).sort();
+    this.categories = Array.from(categorySet).sort();
   }
 
   applyFilter(): void {
     let filtered = this.books;
     if (this.searchTerm.trim()) {
       const term = this.searchTerm.toLowerCase();
-      filtered = this.books.filter(book =>
+      filtered = filtered.filter(book =>
         book.title.toLowerCase().includes(term) ||
         book.author.toLowerCase().includes(term) ||
         (book.category && book.category.toLowerCase().includes(term))
       );
+    }
+    if (this.selectedAuthor) {
+      filtered = filtered.filter(book => book.author === this.selectedAuthor);
+    }
+    if (this.selectedCategory) {
+      filtered = filtered.filter(book => book.category === this.selectedCategory);
     }
     this.totalBooks = filtered.length;
     this.totalPages = Math.ceil(this.totalBooks / this.pageSize);
@@ -110,6 +126,14 @@ export class ManageBooksComponent implements OnInit {
     this.applyFilter();
   }
 
+  resetFilters(): void {
+    this.searchTerm = '';
+    this.selectedAuthor = '';
+    this.selectedCategory = '';
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
   changePage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
@@ -118,6 +142,12 @@ export class ManageBooksComponent implements OnInit {
 
   getPages(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  reloadBooks(): void {
+    this.resetFilters();
+    this.loadBooks();
+    this.cdr.detectChanges();
   }
 
   openAddModal(): void {
@@ -192,5 +222,10 @@ export class ManageBooksComponent implements OnInit {
         }
       });
     }
+  }
+  getStatusText(book: Book): string {
+    if (!book.isActive) return 'Ngừng';
+    if (book.availableCopies === 0) return 'Hết sách';
+    return 'Hoạt động';
   }
 }
