@@ -81,28 +81,28 @@ export class BookDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(['/books']);
   }
 
- borrowBook(): void {
-  if (!this.authService.isLoggedIn()) {
-    this.router.navigate(['/login']);
-    return;
-  }
-
-  if (!this.book) {
-    alert('Không tìm thấy thông tin sách.');
-    return;
-  }
-
-  if (this.book.availableCopies <= 0) {
-    alert('Sách này hiện đã hết, không thể mượn.');
-    return;
-  }
-
-  this.router.navigate(['/borrow-book'], {
-    queryParams: {
-      bookId: this.book.id
+  borrowBook(): void {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+      return;
     }
-  });
-}
+
+    if (!this.book) {
+      alert('Không tìm thấy thông tin sách.');
+      return;
+    }
+
+    if (this.book.availableCopies <= 0) {
+      alert('Sách này hiện đã hết, không thể mượn.');
+      return;
+    }
+
+    this.router.navigate(['/borrow-book'], {
+      queryParams: {
+        bookId: this.book.id
+      }
+    });
+  }
 
   ngOnDestroy(): void {
     this.routeSub?.unsubscribe();
