@@ -8,7 +8,7 @@
         <th>Nhà cung cấp</th>
         <th>Trạng thái</th>
         <th>Ngày tạo</th>
-        <th style="text-align: right;">Thao tác</th>
+        <th style="text-align: right">Thao tác</th>
       </tr>
     </thead>
 
@@ -30,10 +30,7 @@
         <td>{{ user.dateOfBirth | date: 'dd/MM/yyyy' }}</td>
 
         <td>
-          <select
-            class="role-select"
-            [value]="user.role"
-            (change)="onRoleChange(user, $event)">
+          <select class="role-select" [value]="user.role" (change)="onRoleChange(user, $event)">
             <option value="Member">Member</option>
             <option value="Librarian">Librarian</option>
             <option value="Admin">Admin</option>
@@ -62,15 +59,30 @@
               <i class="bi bi-pencil-square"></i>
             </button>
 
-            <button class="icon-btn password" type="button" title="Đổi mật khẩu" (click)="resetPassword.emit(user)">
+            <button
+              class="icon-btn password"
+              type="button"
+              title="Đổi mật khẩu"
+              (click)="resetPassword.emit(user)"
+            >
               <i class="bi bi-key"></i>
             </button>
 
-            <button class="icon-btn lock" type="button" title="Khóa/Mở khóa" (click)="toggleStatus.emit(user)">
+            <button
+              class="icon-btn lock"
+              type="button"
+              title="Khóa/Mở khóa"
+              (click)="toggleStatus.emit(user)"
+            >
               <i class="bi" [ngClass]="user.isActive ? 'bi-lock' : 'bi-unlock'"></i>
             </button>
 
-            <button class="icon-btn delete" type="button" title="Xóa" (click)="deleteUser.emit(user)">
+            <button
+              class="icon-btn delete"
+              type="button"
+              title="Xóa"
+              (click)="deleteUser.emit(user)"
+            >
               <i class="bi bi-trash"></i>
             </button>
           </div>

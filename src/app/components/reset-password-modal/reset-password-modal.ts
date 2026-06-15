@@ -10,7 +10,7 @@ import { AdminResetUserPasswordRequest } from '../../models/admin-reset-user-pas
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './reset-password-modal.html',
-  styleUrl: './reset-password-modal.css'
+  styleUrl: './reset-password-modal.css',
 })
 export class ResetPasswordModalComponent {
   private fb = inject(FormBuilder);
@@ -22,7 +22,7 @@ export class ResetPasswordModalComponent {
   @Output() savePassword = new EventEmitter<AdminResetUserPasswordRequest>();
 
   passwordForm = this.fb.group({
-    newPassword: ['', [Validators.required, Validators.minLength(6)]]
+    newPassword: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   submit(): void {
@@ -32,7 +32,7 @@ export class ResetPasswordModalComponent {
     }
 
     const data: AdminResetUserPasswordRequest = {
-      newPassword: this.passwordForm.value.newPassword ?? ''
+      newPassword: this.passwordForm.value.newPassword ?? '',
     };
 
     this.savePassword.emit(data);

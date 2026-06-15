@@ -7,7 +7,7 @@ import { UserResponse } from '../../models/user-response';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './user-table.html',
-  styleUrl: './user-table.css'
+  styleUrl: './user-table.css',
 })
 export class UserTableComponent {
   @Input() users: UserResponse[] = [];
@@ -45,7 +45,7 @@ export class UserTableComponent {
 
     this.changeRole.emit({
       user,
-      role: select.value
+      role: select.value,
     });
   }
 }

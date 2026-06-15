@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterOutlet, NavMenuComponent],
   templateUrl: './main-layout.html',
-  styleUrl: './main-layout.css'
+  styleUrl: './main-layout.css',
 })
 export class MainLayoutComponent implements OnInit, OnDestroy {
   isCollapsed = false;
@@ -24,7 +24,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -54,12 +54,12 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   }
 
   logout(): void {
-     const isConfirmed = window.confirm('Bạn có chắc chắn muốn đăng xuất không?');
+    const isConfirmed = window.confirm('Bạn có chắc chắn muốn đăng xuất không?');
 
     if (!isConfirmed) {
       return;
     }
-    
+
     this.authService.logout();
     this.loadUserFromLocalStorage();
     this.router.navigate(['/']);

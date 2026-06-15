@@ -1,5 +1,4 @@
 <section class="admin-page">
-
   <div class="admin-header">
     <div>
       <div class="admin-label">
@@ -31,14 +30,12 @@
       <input
         type="text"
         [(ngModel)]="searchText"
-        (ngModelChange)="applyFilter()"
-        placeholder="Tìm theo username hoặc Gmail..." />
+        (ngModelChange)="onFilterChanged()"
+        placeholder="Tìm theo username hoặc Gmail..."
+      />
     </div>
 
-    <select
-      class="admin-filter"
-      [(ngModel)]="roleFilter"
-      (ngModelChange)="applyFilter()">
+    <select class="admin-filter" [(ngModel)]="roleFilter" (ngModelChange)="onFilterChanged()">
       <option value="All">Tất cả vai trò</option>
       <option value="Member">Member</option>
       <option value="Librarian">Librarian</option>
@@ -53,27 +50,49 @@
 
   <app-user-table
     *ngIf="!isLoading"
-    [users]="filteredUsers"
+    [users]="pagedUsers"
     (editUser)="openEditModal($event)"
     (deleteUser)="deleteUser($event)"
     (resetPassword)="openResetPasswordModal($event)"
     (toggleStatus)="toggleStatus($event)"
-    (changeRole)="changeRole($event)">
+    (changeRole)="changeRole($event)"
+  >
   </app-user-table>
+  <div class="pagination-wrapper" *ngIf="totalPages > 1">
+    <button class="page-btn" [disabled]="currentPage === 1" (click)="previousPage()">
+      <i class="bi bi-chevron-left"></i>
+    </button>
+
+    <button
+      *ngFor="let page of [].constructor(totalPages); let i = index"
+      class="page-btn"
+      [class.active]="currentPage === i + 1"
+      (click)="goToPage(i + 1)"
+    >
+      {{ i + 1 }}
+    </button>
+
+    <button class="page-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+      <i class="bi bi-chevron-right"></i>
+    </button>
+  </div>
 
   <app-user-form-modal
     [isOpen]="isUserModalOpen"
     [editingUser]="editingUser"
+    [apiErrorMessage]="userModalErrorMessage"
+    [isSaving]="isSavingUser"
     (closeModal)="closeUserModal()"
     (saveCreate)="createUser($event)"
-    (saveUpdate)="updateUser($event)">
+    (saveUpdate)="updateUser($event)"
+  >
   </app-user-form-modal>
 
   <app-reset-password-modal
     [isOpen]="isResetPasswordModalOpen"
     [selectedUser]="selectedUser"
     (closeModal)="closeResetPasswordModal()"
-    (savePassword)="resetPassword($event)">
+    (savePassword)="resetPassword($event)"
+  >
   </app-reset-password-modal>
-
 </section>

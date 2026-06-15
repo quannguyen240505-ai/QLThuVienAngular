@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
@@ -11,19 +11,20 @@ import { ForgotPasswordRequest } from '../../models/forgot-password-request';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './forgot-password.html',
-  styleUrl: './forgot-password.css'
+  styleUrl: './forgot-password.css',
 })
 export class ForgotPasswordComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   errorMessage = '';
   successMessage = '';
   isLoading = false;
 
   forgotForm = this.fb.group({
-    gmail: ['', [Validators.required, Validators.email]]
+    gmail: ['', [Validators.required, Validators.email]],
   });
 
   handleForgotPassword(): void {
@@ -38,7 +39,7 @@ export class ForgotPasswordComponent {
     this.isLoading = true;
 
     const data: ForgotPasswordRequest = {
-      gmail: this.forgotForm.value.gmail ?? ''
+      gmail: this.forgotForm.value.gmail ?? '',
     };
 
     this.authService.forgotPassword(data).subscribe({
@@ -48,8 +49,8 @@ export class ForgotPasswordComponent {
         setTimeout(() => {
           this.router.navigate(['/reset-password'], {
             queryParams: {
-              gmail: data.gmail
-            }
+              gmail: data.gmail,
+            },
           });
         }, 900);
       },
@@ -65,10 +66,11 @@ export class ForgotPasswordComponent {
         }
 
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       complete: () => {
         this.isLoading = false;
-      }
+      },
     });
   }
 }

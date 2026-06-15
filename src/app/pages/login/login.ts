@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -10,19 +10,20 @@ import { LoginRequest } from '../../models/login-request';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrl: './login.css',
 })
 export class LoginComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   errorMessage = '';
   isLoading = false;
 
   loginForm = this.fb.group({
     username: ['', Validators.required],
-    password: ['', Validators.required]
+    password: ['', Validators.required],
   });
 
   handleLogin(): void {
@@ -37,7 +38,7 @@ export class LoginComponent {
 
     const data: LoginRequest = {
       username: this.loginForm.value.username ?? '',
-      password: this.loginForm.value.password ?? ''
+      password: this.loginForm.value.password ?? '',
     };
 
     this.authService.login(data).subscribe({
@@ -66,7 +67,8 @@ export class LoginComponent {
         }
 
         this.isLoading = false;
-      }
+        this.cdr.detectChanges();
+      },
     });
   }
 
