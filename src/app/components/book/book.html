@@ -28,7 +28,7 @@
                     <span class="book-available" [ngClass]="book.availableCopies > 0 ? 'available' : 'unavailable'">
                         {{ book.availableCopies > 0 ? 'Còn ' + book.availableCopies : 'Hết sách' }}
                     </span>
-                    <span class="book-total">Tổng: {{ book.totalCopies }}</span>
+                    <span class="book-total"> Còn {{ book.availableCopies }} / {{ book.totalCopies }}</span>
                 </div>
                 <div class="card-actions">
                     <a [routerLink]="['/books', book.id]" class="btn-detail">Xem chi tiết</a>
