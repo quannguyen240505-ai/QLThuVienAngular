@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+
 import { MainLayoutComponent } from './layouts/main-layout/main-layout';
 import { HomeComponent } from './pages/home/home';
 import { LoginComponent } from './pages/login/login';
@@ -10,6 +11,23 @@ import { AccountsComponent } from './pages/accounts/accounts';
 import { SystemSettingsComponent } from './pages/system-settings/system-settings';
 import { LibraryInfoComponent } from './pages/library-info/library-info';
 import { ProfileComponent } from './pages/profile/profile';
+
+import { BooksComponent } from './pages/book/book';
+import { BookDetailComponent } from './pages/book-detail/book-detail';
+import { SearchBooksComponent } from './pages/search-books/search-books';
+import { ManageBooksComponent } from './pages/manage-books/manage-books';
+
+import { Readers } from './pages/readers/readers';
+import { ReaderCreate } from './pages/reader-create/reader-create';
+
+import { BorrowBook } from './pages/borrow-book/borrow-book';
+import { ReturnBooks } from './pages/return-books/return-books';
+import { BorrowHistory } from './pages/borrow-history/borrow-history';
+import { ManageBorrowsComponent } from './pages/manage-borrows/manage-borrows';
+import { BorrowRequestPage } from './pages/borrow-request/borrow-request';
+import { OverdueBooksComponent } from './pages/overdue-books/overdue-books';
+
+import { StatisticsComponent } from './pages/statistics/statistics';
 
 export const routes: Routes = [
   {
@@ -46,6 +64,12 @@ export const routes: Routes = [
         component: SocialLoginSuccessComponent,
         title: 'Đang đăng nhập',
       },
+
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        title: 'Tài khoản của tôi',
+      },
       {
         path: 'accounts',
         component: AccountsComponent,
@@ -61,10 +85,79 @@ export const routes: Routes = [
         component: LibraryInfoComponent,
         title: 'Thông tin thư viện',
       },
+
       {
-        path: 'profile',
-        component: ProfileComponent,
-        title: 'Tài khoản của tôi',
+        path: 'books',
+        component: BooksComponent,
+        title: 'Danh sách sách',
+      },
+      {
+        path: 'books/:id',
+        component: BookDetailComponent,
+        title: 'Chi tiết sách',
+      },
+      {
+        path: 'search-books',
+        component: SearchBooksComponent,
+        title: 'Tìm kiếm sách',
+      },
+      {
+        path: 'manage-books',
+        component: ManageBooksComponent,
+        title: 'Quản lý sách',
+      },
+
+      {
+        path: 'readers',
+        component: Readers,
+        title: 'Quản lý độc giả',
+      },
+      {
+        path: 'readers/create',
+        component: ReaderCreate,
+        title: 'Thêm độc giả',
+      },
+      {
+        path: 'readers/edit/:id',
+        component: ReaderCreate,
+        title: 'Cập nhật độc giả',
+      },
+
+      {
+        path: 'borrow-book',
+        component: BorrowBook,
+        title: 'Lập phiếu mượn',
+      },
+      {
+        path: 'return-books',
+        component: ReturnBooks,
+        title: 'Trả sách',
+      },
+      {
+        path: 'borrow-history',
+        component: BorrowHistory,
+        title: 'Lịch sử mượn/trả',
+      },
+      {
+        path: 'manage-borrows',
+        component: ManageBorrowsComponent,
+        title: 'Duyệt yêu cầu mượn',
+      },
+      {
+        path: 'borrow-request',
+        component: BorrowRequestPage,
+        title: 'Trạng thái yêu cầu mượn',
+      },
+      {
+        path: 'overdue-books',
+        component: OverdueBooksComponent,
+        title: 'Sách quá hạn',
+      },
+
+      {
+        path: 'statistics',
+        component: StatisticsComponent,
+        title: 'Thống kê hoạt động',
       },
     ],
   },

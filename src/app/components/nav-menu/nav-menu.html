@@ -34,7 +34,7 @@
       <span>Trang chủ</span>
     </a>
 
-    <a class="menu-link" routerLink="/books" routerLinkActive="active">
+    <a class="menu-link" routerLink="/books" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
       <i class="bi bi-book"></i>
       <span>Danh sách sách</span>
     </a>
@@ -44,10 +44,10 @@
       <span>Tìm kiếm sách</span>
     </a>
 
-    <a class="menu-link" routerLink="/book-detail" routerLinkActive="active">
+    <div class="menu-link" [class.active]="isBookDetailRoute()">
       <i class="bi bi-info-circle"></i>
       <span>Thông tin sách</span>
-    </a>
+    </div>
 
     <a class="menu-link" routerLink="/library-info" routerLinkActive="active">
       <i class="bi bi-info-square"></i>
@@ -57,9 +57,14 @@
     <ng-container *ngIf="isMemberOrHigher">
       <div class="menu-title">Thành viên</div>
 
-      <a class="menu-link" routerLink="/borrow-request" routerLinkActive="active">
+      <a class="menu-link" routerLink="/borrow-book" routerLinkActive="active">
         <i class="bi bi-send"></i>
         <span>Gửi yêu cầu mượn</span>
+      </a>
+
+      <a routerLink="/return-books" routerLinkActive="active" class="menu-link">
+        <i class="bi bi-arrow-return-left"></i>
+        <span>Trả sách</span>
       </a>
 
       <a class="menu-link" routerLink="/borrow-history" routerLinkActive="active">
@@ -67,7 +72,7 @@
         <span>Lịch sử mượn</span>
       </a>
 
-      <a class="menu-link" routerLink="/request-status" routerLinkActive="active">
+      <a class="menu-link" routerLink="/borrow-request" routerLinkActive="active">
         <i class="bi bi-hourglass-split"></i>
         <span>Trạng thái yêu cầu</span>
       </a>
@@ -85,7 +90,7 @@
         <span>Quản lý sách</span>
       </a>
 
-      <a class="menu-link" routerLink="/approve-borrow" routerLinkActive="active">
+      <a class="menu-link" routerLink="/manage-borrows" routerLinkActive="active">
         <i class="bi bi-check2-square"></i>
         <span>Duyệt yêu cầu mượn</span>
       </a>
@@ -98,6 +103,20 @@
       <a class="menu-link" routerLink="/overdue-books" routerLinkActive="active">
         <i class="bi bi-exclamation-triangle"></i>
         <span>Sách quá hạn</span>
+      </a>
+      <a class="menu-link" routerLink="/statistics" routerLinkActive="active">
+        <i class="bi bi-bar-chart"></i>
+        <span>Thống kê hoạt động</span>
+      </a>
+
+      <a routerLink="/readers" routerLinkActive="active" class="menu-link">
+        <i class="bi bi-people"></i>
+        <span>Danh sách độc giả</span>
+      </a>
+
+      <a routerLink="/readers/create" routerLinkActive="active" class="menu-link">
+        <i class="bi bi-person-plus"></i>
+        <span>Thêm độc giả</span>
       </a>
     </ng-container>
 
@@ -118,6 +137,7 @@
         <i class="bi bi-bar-chart"></i>
         <span>Thống kê hoạt động</span>
       </a>
+
     </ng-container>
   </nav>
 

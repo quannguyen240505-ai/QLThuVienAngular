@@ -1,0 +1,266 @@
+.manage-borrows-page {
+  min-height: 100vh;
+  padding: 28px;
+  background: #f4f7fb;
+}
+
+.manage-borrows-header {
+  background: linear-gradient(135deg, #198754, #51cf66);
+  color: white;
+  padding: 26px 30px;
+  border-radius: 22px;
+  margin-bottom: 22px;
+  box-shadow: 0 12px 30px rgba(25, 135, 84, 0.25);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.manage-borrows-header h2 {
+  margin: 0;
+  font-weight: 900;
+}
+
+.manage-borrows-header p {
+  margin: 6px 0 0;
+  opacity: 0.9;
+}
+
+.refresh-btn {
+  border: none;
+  background: white;
+  color: #198754;
+  padding: 11px 18px;
+  border-radius: 12px;
+  font-weight: 800;
+}
+
+.message-box {
+  background: #e0f2fe;
+  color: #075985;
+  padding: 14px 18px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  font-weight: 700;
+}
+
+.borrow-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.summary-card {
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.06);
+}
+
+.summary-card span {
+  display: block;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.summary-card strong {
+  font-size: 30px;
+}
+
+.summary-card.pending strong {
+  color: #d97706;
+}
+
+.summary-card.borrowing strong {
+  color: #0d6efd;
+}
+
+.summary-card.returned strong {
+  color: #198754;
+}
+
+.borrow-status-filter {
+  background: white;
+  padding: 14px;
+  border-radius: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+.borrow-status-filter button {
+  border: 1px solid #dbe3ef;
+  background: #f8fafc;
+  color: #334155;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.borrow-status-filter button.active {
+  background: #0d6efd;
+  color: white;
+  border-color: #0d6efd;
+}
+
+.borrow-card-list {
+  display: grid;
+  gap: 18px;
+}
+
+.borrow-ticket-card {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.07);
+}
+
+.ticket-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ticket-top h5 {
+  margin: 0;
+  font-weight: 900;
+  color: #111827;
+}
+
+.ticket-top span {
+  color: #6b7280;
+}
+
+.ticket-status {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #856404 !important;
+}
+
+.status-borrowing {
+  background: #cfe2ff;
+  color: #084298 !important;
+}
+
+.status-returned {
+  background: #d1e7dd;
+  color: #0f5132 !important;
+}
+
+.status-other {
+  background: #e9ecef;
+  color: #495057 !important;
+}
+
+.ticket-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.ticket-info div {
+  background: #f8f9fa;
+  padding: 14px;
+  border-radius: 14px;
+}
+
+.ticket-info small {
+  display: block;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.ticket-info strong {
+  color: #111827;
+}
+
+.ticket-books {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 14px;
+}
+
+.ticket-books strong {
+  color: #111827;
+}
+
+.ticket-books ul {
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+.ticket-books li {
+  margin-bottom: 6px;
+  color: #111827;
+}
+
+.ticket-books li span {
+  margin-left: 10px;
+  color: #6b7280;
+}
+
+.ticket-note {
+  margin-top: 14px;
+  color: #495057;
+}
+
+.ticket-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.approve-btn,
+.return-btn {
+  border: none;
+  color: white;
+  padding: 11px 16px;
+  border-radius: 10px;
+  font-weight: 900;
+}
+
+.approve-btn {
+  background: #198754;
+}
+
+.return-btn {
+  background: #0d6efd;
+}
+
+.done-text {
+  color: #198754;
+  font-weight: 900;
+}
+
+.loading-box,
+.empty-box {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  color: #334155;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .borrow-summary,
+  .ticket-info {
+    grid-template-columns: 1fr;
+  }
+
+  .manage-borrows-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+}

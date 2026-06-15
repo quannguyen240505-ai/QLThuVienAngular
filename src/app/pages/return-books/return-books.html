@@ -1,0 +1,92 @@
+<section class="return-books-page">
+  <div class="return-header">
+    <div>
+      <h2>📥 Trả sách</h2>
+      <p>Danh sách sách bạn đang mượn bằng tài khoản hiện tại</p>
+    </div>
+
+    <button type="button" class="refresh-btn" (click)="loadMyBorrowing()">
+      Làm mới
+    </button>
+  </div>
+
+  @if (message) {
+    <div class="message-box">
+      {{ message }}
+    </div>
+  }
+
+  @if (isLoading) {
+    <div class="loading-box">
+      Đang tải dữ liệu...
+    </div>
+  } @else if (borrowings.length === 0) {
+    <div class="empty-box">
+      Bạn hiện không có sách nào đang mượn.
+    </div>
+  } @else {
+    <div class="return-list">
+      @for (ticket of borrowings; track ticket.borrowTicketId) {
+        <div class="return-card">
+          <div class="return-top">
+            <div>
+              <h5>Phiếu mượn #{{ ticket.borrowTicketId }}</h5>
+              <span>Trạng thái: Đang mượn</span>
+            </div>
+
+            <button type="button" class="return-btn" (click)="returnBook(ticket)">
+              Xác nhận trả sách
+            </button>
+          </div>
+
+          <div class="return-info">
+            <div>
+              <small>Ngày mượn</small>
+              <strong>{{ ticket.borrowDate | date:'dd/MM/yyyy' }}</strong>
+            </div>
+
+            <div>
+              <small>Hạn trả</small>
+              <strong>{{ ticket.dueDate | date:'dd/MM/yyyy' }}</strong>
+            </div>
+
+            <div>
+              <small>Số sách</small>
+              <strong>{{ ticket.details.length }}</strong>
+            </div>
+          </div>
+
+            <div class="return-books-box">
+            <div class="books-box-title">
+                <div>
+                <i class="bi bi-journal-bookmark-fill"></i>
+                <strong>Sách đang mượn</strong>
+                </div>
+
+                <span>{{ ticket.details.length }} đầu sách</span>
+            </div>
+
+            <div class="borrowed-book-grid">
+                @for (detail of ticket.details; track detail.borrowDetailId) {
+                <div class="borrowed-book-card">
+                    <div class="book-icon">
+                    <i class="bi bi-book"></i>
+                    </div>
+
+                    <div class="book-info">
+                    <h6>{{ detail.bookTitle || 'Không rõ sách' }}</h6>
+                    <p>Mã sách: #{{ detail.bookId }}</p>
+                    </div>
+
+                    <div class="book-quantity">
+                    x{{ detail.quantity }}
+                    </div>
+                </div>
+                }
+            </div>
+            </div>
+        </div>
+      }
+    </div>
+  }
+</section>

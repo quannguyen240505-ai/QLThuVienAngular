@@ -1,0 +1,68 @@
+<div class="books-container">
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Đang tải sách...</p>
+    </div>
+
+    <!-- Grid sách -->
+    <div *ngIf="!loading" class="books-grid">
+        <div *ngFor="let book of filteredBooks" class="book-card">
+            <div class="book-card-cover">
+                <img *ngIf="book.coverImageUrl" [src]="book.coverImageUrl" class="book-cover-img" alt="book cover">
+                <div *ngIf="!book.coverImageUrl" class="placeholder-cover">
+                    <i class="bi bi-book"></i>
+                </div>
+            </div>
+            <div class="book-card-body">
+                <h3 class="book-title">{{ book.title }}</h3>
+                <p class="book-author">{{ book.author }}</p>
+                <div class="book-meta">
+                    <span class="book-category">{{ book.category || 'Chưa phân loại' }}</span>
+                    <span class="book-year">{{ book.publishYear || 'N/A' }}</span>
+                </div>
+                <p class="book-description" *ngIf="book.description">
+                    {{ book.description | slice:0:80 }}{{ book.description.length > 80 ? '...' : '' }}
+                </p>
+                <div class="book-stats">
+                    <span class="book-available" [ngClass]="book.availableCopies > 0 ? 'available' : 'unavailable'">
+                        {{ book.availableCopies > 0 ? 'Còn ' + book.availableCopies : 'Hết sách' }}
+                    </span>
+                    <span class="book-total"> Tổng: {{ book.totalCopies }}</span>
+                </div>
+                <div class="card-actions">
+                    <a [routerLink]="['/books', book.id]" class="btn-detail">Xem chi tiết</a>
+                    <button class="btn-borrow" [disabled]="book.availableCopies === 0" (click)="borrowBook(book.id)">
+                        {{ getButtonText(book) }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trường hợp không có sách -->
+    <div *ngIf="!loading && filteredBooks.length === 0" class="no-results">
+        <div class="no-results-icon">📭</div>
+        <p>Không tìm thấy sách nào.</p>
+    </div>
+
+    <!-- Phân trang -->
+    <div *ngIf="totalPages > 1" class="pagination-container">
+        <nav aria-label="Phân trang">
+            <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a class="page-link" (click)="changePage(currentPage - 1)">Trước</a>
+                </li>
+                <li class="page-item" *ngFor="let page of getPages()" [class.active]="page === currentPage">
+                    <a class="page-link" (click)="changePage(page)">{{ page }}</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                    <a class="page-link" (click)="changePage(currentPage + 1)">Sau</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="page-info">
+            Trang {{ currentPage }} / {{ totalPages }} (Tổng {{ totalBooks }} sách)
+        </div>
+    </div>
+</div>

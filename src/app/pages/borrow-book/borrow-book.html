@@ -1,0 +1,124 @@
+<section class="borrow-page">
+  <div class="borrow-header">
+    <div>
+      <h1>📚 Gửi yêu cầu mượn sách</h1>
+      <p>Yêu cầu sẽ được gửi bằng tài khoản Member đang đăng nhập</p>
+    </div>
+  </div>
+
+  @if (message) {
+    <div class="alert-box" [class.success]="isSuccess">
+      {{ message }}
+    </div>
+  }
+
+    @if (setting) {
+    <div class="borrow-policy-box">
+        <div>
+        <span>Sách tối đa</span>
+        <strong>{{ setting.maxBorrowBooks }} quyển/lượt</strong>
+        </div>
+
+        <div>
+        <span>Ngày mượn tối đa</span>
+        <strong>{{ setting.maxBorrowDays }} ngày</strong>
+        </div>
+
+        <div>
+        <span>Trạng thái</span>
+        <strong>{{ setting.allowBorrowRequest ? 'Đang mở' : 'Tạm đóng' }}</strong>
+        </div>
+    </div>
+    }
+  <div class="borrow-card">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Ngày hẹn trả</label>
+       <input
+            type="date"
+            name="dueDate"
+            [min]="todayText"
+            [max]="maxDueDateText"
+            [(ngModel)]="borrow.dueDate"
+            />  
+      </div>
+
+      <div class="form-group">
+        <label>Sách</label>
+        <select name="bookId" [(ngModel)]="bookItem.bookId">
+          <option [value]="0">-- Chọn sách --</option>
+          @for (book of books; track book.id) {
+            <option [value]="book.id">
+              {{ book.title }} - còn {{ book.availableCopies }} cuốn
+            </option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Số lượng</label>
+       <input
+        type="number"
+        name="quantity"
+        min="1"
+        [max]="maxBorrowBooks - totalSelectedQuantity"
+        [(ngModel)]="bookItem.quantity"
+        />
+      </div>
+    </div>
+
+    <button class="add-book-btn" type="button" (click)="addBook()">
+      + Thêm sách vào yêu cầu
+    </button>
+
+    <div class="form-group note-box">
+      <label>Ghi chú</label>
+      <textarea
+        rows="3"
+        name="note"
+        [(ngModel)]="borrow.note"
+        placeholder="Nhập ghi chú nếu có..."
+      ></textarea>
+    </div>
+
+    @if (borrow.books.length > 0) {
+      <div class="selected-books">
+        <h3>Sách đã chọn</h3>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Tên sách</th>
+              <th>Số lượng</th>
+              <th>Xóa</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (item of borrow.books; track item.bookId) {
+              <tr>
+                <td>{{ getBookTitle(item.bookId) }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>
+                  <button class="delete-btn" type="button" (click)="removeBook(item)">
+                    Xóa
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <div class="borrow-actions">
+      <button class="send-btn" type="button" (click)="sendBorrowRequest()">
+        Gửi yêu cầu mượn sách
+      </button>
+
+      <button class="reset-btn" type="button" (click)="resetForm()">
+        Làm mới
+      </button>
+    </div>
+  </div>
+</section>

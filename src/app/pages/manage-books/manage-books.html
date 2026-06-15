@@ -1,0 +1,131 @@
+<div class="manage-books-container">
+    <h2 class="page-title">📚 Quản lý sách</h2>
+
+    <!-- Hàng tìm kiếm và nút -->
+    <div class="search-and-actions">
+        <div class="search-box">
+            <input type="text" placeholder="Tìm kiếm sách..." [(ngModel)]="searchTerm" (keyup.enter)="onSearch()"
+                class="search-input" name="searchTerm">
+            <button class="search-btn" (click)="onSearch()">🔍 Tìm kiếm</button>
+        </div>
+        <div class="action-buttons">
+            <button class="btn-reload" (click)="reloadBooks()">🔄 Tải lại</button>
+            <button class="btn-add" (click)="openAddModal()">+ Thêm sách mới</button>
+        </div>
+    </div>
+
+    <!-- Bộ lọc nâng cao -->
+    <div class="filters-row">
+        <select [(ngModel)]="selectedAuthor" (change)="onSearch()" class="filter-select">
+            <option value="">-- Tất cả tác giả --</option>
+            <option *ngFor="let author of authors" [value]="author">{{ author }}</option>
+        </select>
+        <select [(ngModel)]="selectedCategory" (change)="onSearch()" class="filter-select">
+            <option value="">-- Tất cả thể loại --</option>
+            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+        <button class="btn-reset" (click)="resetFilters()">Xóa bộ lọc</button>
+    </div>
+
+    <div *ngIf="loading" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Đang tải...</p>
+    </div>
+
+    <div *ngIf="!loading" class="table-responsive">
+        <table class="books-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Ảnh</th>
+                    <th>Tên sách</th>
+                    <th>Tác giả</th>
+                    <th>Thể loại</th>
+                    <th>Số lượng</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let book of filteredBooks">
+                    <td>{{ book.id }}</td>
+                    <td><img [src]="book.coverImageUrl || 'https://picsum.photos/id/20/50/70'" class="table-cover"
+                            alt="cover"></td>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.category || 'N/A' }}</td>
+                    <td>{{ book.availableCopies }}/{{ book.totalCopies }}</td>
+                    <td>
+                        <span class="status-badge" [ngClass]="{
+                            'active': book.isActive && book.availableCopies > 0,
+                            'inactive': !book.isActive,
+                            'out-of-stock': book.isActive && book.availableCopies === 0
+                        }">
+                            {{ getStatusText(book) }}
+                        </span>
+                    </td>
+                    <td class="actions-col">
+                        <button class="btn-edit" (click)="openEditModal(book)">✏️ Sửa</button>
+                        <button class="btn-delete" (click)="deleteBook(book.id, book.title)">🗑️ Xóa</button>
+                    </td>
+                </tr>
+                <tr *ngIf="filteredBooks.length===0">
+                    <td colspan="8">Không có sách nào.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="totalPages > 1" class="pagination-container">
+        <ul class="pagination">
+            <li class="page-item" [class.disabled]="currentPage===1"><a class="page-link"
+                    (click)="changePage(currentPage-1)">Trước</a></li>
+            <li class="page-item" *ngFor="let page of getPages()" [class.active]="page===currentPage"><a
+                    class="page-link" (click)="changePage(page)">{{ page }}</a></li>
+            <li class="page-item" [class.disabled]="currentPage===totalPages"><a class="page-link"
+                    (click)="changePage(currentPage+1)">Sau</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- Modal thêm/sửa sách -->
+<div class="modal" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>{{ modalTitle }}</h3><span class="close" (click)="closeModal()">&times;</span>
+        </div>
+        <form (ngSubmit)="saveBook()">
+            <div class="form-group"><label>Tên sách *</label><input type="text" [(ngModel)]="currentBook.title"
+                    name="title" required></div>
+            <div class="form-group"><label>Tác giả *</label><input type="text" [(ngModel)]="currentBook.author"
+                    name="author" required></div>
+            <div class="form-group"><label>ISBN</label><input type="text" [(ngModel)]="currentBook.isbn" name="isbn">
+            </div>
+            <div class="form-group"><label>Nhà xuất bản</label><input type="text" [(ngModel)]="currentBook.publisher"
+                    name="publisher"></div>
+            <div class="form-group"><label>Năm xuất bản</label><input type="number"
+                    [(ngModel)]="currentBook.publishYear" name="publishYear"></div>
+            <div class="form-group">
+                <label>Thể loại</label>
+                <select [(ngModel)]="currentBook.category" name="category" class="category-select">
+                    <option value="">-- Chọn thể loại --</option>
+                    <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Mô tả</label><textarea [(ngModel)]="currentBook.description"
+                    name="description" rows="3"></textarea></div>
+            <div class="form-row">
+                <div class="form-group"><label>Số lượng tổng *</label><input type="number"
+                        [(ngModel)]="currentBook.totalCopies" name="totalCopies" required></div>
+                <div class="form-group"><label>Số lượng còn lại *</label><input type="number"
+                        [(ngModel)]="currentBook.availableCopies" name="availableCopies" required></div>
+            </div>
+            <div class="form-group"><label>URL ảnh bìa</label><input type="text" [(ngModel)]="currentBook.coverImageUrl"
+                    name="coverImageUrl"></div>
+            <div class="form-group checkbox"><label><input type="checkbox" [(ngModel)]="currentBook.isActive"
+                        name="isActive"> Hoạt động</label></div>
+            <div class="form-actions"><button type="submit" class="btn-save">💾 Lưu</button><button type="button"
+                    class="btn-cancel" (click)="closeModal()">❌ Hủy</button></div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+<section class="borrow-history-page">
+  <div class="history-header">
+    <div>
+      <h2>📜 Lịch sử mượn/trả sách</h2>
+      <p>Theo dõi toàn bộ phiếu mượn, trạng thái và sách đã mượn</p>
+    </div>
+
+    <button type="button" class="refresh-btn" (click)="loadHistory()">
+      Làm mới
+    </button>
+  </div>
+
+  @if (message) {
+    <div class="message-box">{{ message }}</div>
+  }
+
+  @if (isLoading) {
+    <div class="loading-box">Đang tải dữ liệu...</div>
+  } @else if (histories.length === 0) {
+    <div class="empty-box">Chưa có lịch sử mượn/trả.</div>
+  } @else {
+    <div class="history-list">
+      @for (item of histories; track item.borrowTicketId) {
+        <div class="history-card">
+          <div class="history-top">
+            <div>
+              <h5>{{ item.readerName || 'Không rõ độc giả' }}</h5>
+              <span>Phiếu #{{ item.borrowTicketId }}</span>
+            </div>
+
+            <span class="history-status" [ngClass]="getStatusClass(item.status)">
+              {{ getStatusText(item.status) }}
+            </span>
+          </div>
+
+          <div class="history-info">
+            <div>
+              <small>Ngày mượn</small>
+              <strong>{{ item.borrowDate | date:'dd/MM/yyyy' }}</strong>
+            </div>
+
+            <div>
+              <small>Hạn trả</small>
+              <strong>{{ item.dueDate | date:'dd/MM/yyyy' }}</strong>
+            </div>
+
+            <div>
+              <small>Ngày trả</small>
+              <strong>{{ item.returnDate ? (item.returnDate | date:'dd/MM/yyyy') : 'Chưa trả' }}</strong>
+            </div>
+          </div>
+
+          <div class="book-box">
+            <strong>Sách đã mượn</strong>
+
+            <ul>
+              @for (detail of item.details; track detail.borrowDetailId) {
+                <li>
+                  {{ detail.bookTitle || 'Không rõ sách' }}
+                  <span>x{{ detail.quantity }}</span>
+                  <em>{{ getStatusText(detail.status) }}</em>
+                </li>
+              }
+            </ul>
+          </div>
+
+          @if (item.overdueDays > 0 || item.fineAmount > 0) {
+            <div class="fine-box">
+              Quá hạn: <strong>{{ item.overdueDays }}</strong> ngày |
+              Phí phạt: <strong>{{ formatMoney(item.fineAmount) }}</strong>
+            </div>
+          }
+
+          @if (item.note) {
+            <div class="note-box">
+              <strong>Ghi chú:</strong> {{ item.note }}
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</section>

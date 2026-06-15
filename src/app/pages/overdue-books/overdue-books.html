@@ -1,0 +1,84 @@
+<section class="overdue-page">
+
+  <div class="page-header">
+    <h2>⚠️ Sách quá hạn</h2>
+
+    <p>
+      Danh sách độc giả đang quá hạn trả sách
+    </p>
+  </div>
+
+  <div class="summary-card">
+    <strong>
+      {{ overdueBooks.length }}
+    </strong>
+
+    <span>Đầu sách quá hạn</span>
+  </div>
+
+  <div class="overdue-grid">
+
+    @for(item of overdueBooks;
+    track item.borrowTicketId){
+
+    <div class="overdue-card">
+
+      <div class="card-top">
+
+        <h5>
+          {{ item.bookTitle }}
+        </h5>
+
+        <span class="badge-overdue">
+          {{ calculateOverdueDays(item.dueDate) }}
+          ngày
+        </span>
+
+      </div>
+
+      <div class="reader">
+
+        👤 {{ item.readerName }}
+
+      </div>
+
+      <div class="info-row">
+
+        <span>Ngày mượn</span>
+
+        <strong>
+          {{ item.borrowDate | date:'dd/MM/yyyy' }}
+        </strong>
+
+      </div>
+
+      <div class="info-row">
+
+        <span>Hạn trả</span>
+
+        <strong>
+          {{ item.dueDate | date:'dd/MM/yyyy' }}
+        </strong>
+
+      </div>
+
+      <div class="fine-box">
+
+        Phạt tạm tính
+
+        <strong>
+          {{
+            calculateFine(item.dueDate)
+            | number
+          }} đ
+        </strong>
+
+      </div>
+
+    </div>
+
+    }
+
+  </div>
+
+</section>

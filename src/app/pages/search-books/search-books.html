@@ -1,0 +1,75 @@
+<div class="search-page-container">
+    <div class="search-header">
+        <h2>🔍 Tìm kiếm sách</h2>
+        <p>Tìm kiếm theo tên sách, tác giả hoặc thể loại</p>
+    </div>
+
+    <!-- Form tìm kiếm và lọc -->
+    <div class="search-form">
+        <div class="search-input-group">
+            <input type="text" placeholder="Nhập từ khóa..." [(ngModel)]="searchKeyword" (keyup.enter)="onSearch()"
+                class="search-input">
+            <button class="btn-search" (click)="onSearch()">Tìm kiếm</button>
+        </div>
+        <div class="filter-group">
+            <select [(ngModel)]="selectedCategory" (change)="onSearch()" class="category-select">
+                <option value="">-- Tất cả thể loại --</option>
+                <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            </select>
+            <button class="btn-clear" (click)="clearFilters()">Xóa bộ lọc</button>
+        </div>
+    </div>
+
+    <!-- Kết quả thông báo -->
+    <div *ngIf="!loading" class="results-info">
+        Tìm thấy <strong>{{ totalResults }}</strong> kết quả
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Đang tải dữ liệu...</p>
+    </div>
+
+    <!-- Grid hiển thị kết quả -->
+    <div *ngIf="!loading" class="books-grid">
+        <div *ngFor="let book of searchResults" class="book-card">
+            <div class="book-card-cover">
+                <img *ngIf="book.coverImageUrl" [src]="book.coverImageUrl" class="book-cover-img" alt="cover">
+                <div *ngIf="!book.coverImageUrl" class="placeholder-cover">
+                    <i class="bi bi-book"></i>
+                </div>
+            </div>
+            <div class="book-card-body">
+                <h3 class="book-title">{{ book.title }}</h3>
+                <p class="book-author">{{ book.author }}</p>
+                <div class="book-meta">
+                    <span class="book-category">{{ book.category || 'Chưa phân loại' }}</span>
+                    <span class="book-year">{{ book.publishYear || 'N/A' }}</span>
+                </div>
+                <p class="book-description" *ngIf="book.description">
+                    {{ book.description | slice:0:80 }}{{ book.description.length > 80 ? '...' : '' }}
+                </p>
+                <div class="book-stats">
+                    <span class="book-available" [ngClass]="book.availableCopies > 0 ? 'available' : 'unavailable'">
+                        {{ book.availableCopies > 0 ? 'Còn ' + book.availableCopies : 'Hết sách' }}
+                    </span>
+                    <span class="book-total">Tổng: {{ book.totalCopies }}</span>
+                </div>
+                <div class="card-actions">
+                    <a [routerLink]="['/books', book.id]" class="btn-detail">Xem chi tiết</a>
+                    <button class="btn-borrow" [disabled]="book.availableCopies === 0" (click)="borrowBook(book.id)">
+                        {{ getButtonText(book) }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Không có kết quả -->
+    <div *ngIf="!loading && searchResults.length === 0" class="no-results">
+        <div class="no-results-icon">📭</div>
+        <p>Không tìm thấy sách nào phù hợp.</p>
+        <button class="btn-clear" (click)="clearFilters()">Xóa bộ lọc</button>
+    </div>
+</div>
