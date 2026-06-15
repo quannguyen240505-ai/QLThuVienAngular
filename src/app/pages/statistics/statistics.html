@@ -1,0 +1,117 @@
+<div class="statistics-page">
+    <div class="statistics-header">
+        <div>
+            <div class="statistics-label">
+                <i class="bi bi-bar-chart"></i> Admin Dashboard
+            </div>
+            <h1>Thống kê hoạt động</h1>
+            <p>Theo dõi tổng quan tài khoản, phân quyền và cấu hình vận hành hiện tại của thư viện.</p>
+        </div>
+        <button class="statistics-refresh-btn" (click)="loadStatistics()">
+            <i class="bi bi-arrow-clockwise"></i> Tải lại
+        </button>
+    </div>
+
+    <div *ngIf="errorMessage" class="statistics-alert">
+        {{ errorMessage }}
+    </div>
+
+    <div *ngIf="isLoading" class="statistics-loading">
+        <i class="bi bi-arrow-repeat"></i> Đang tải dữ liệu thống kê...
+    </div>
+
+    <div *ngIf="!isLoading && !errorMessage && statistics">
+        <!-- 4 thẻ chính -->
+        <div class="stats-grid">
+            <div class="stat-card primary">
+                <div class="stat-icon"><i class="bi bi-people"></i></div>
+                <div>
+                    <span>Tổng tài khoản</span>
+                    <strong>{{ statistics.totalUsers }}</strong>
+                </div>
+            </div>
+            <div class="stat-card success">
+                <div class="stat-icon"><i class="bi bi-person-check"></i></div>
+                <div>
+                    <span>Đang hoạt động</span>
+                    <strong>{{ statistics.totalActiveUsers }}</strong>
+                </div>
+            </div>
+            <div class="stat-card danger">
+                <div class="stat-icon"><i class="bi bi-person-lock"></i></div>
+                <div>
+                    <span>Bị khóa</span>
+                    <strong>{{ statistics.totalLockedUsers }}</strong>
+                </div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-icon"><i class="bi bi-google"></i></div>
+                <div>
+                    <span>Tài khoản Google</span>
+                    <strong>{{ statistics.totalGoogleAccounts }}</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phân bố vai trò và loại tài khoản -->
+        <div class="statistics-layout">
+            <div class="statistics-card">
+                <div class="card-title">
+                    <i class="bi bi-shield-lock"></i>
+                    <div>
+                        <h2>Phân bố vai trò</h2>
+                        <p>Số lượng tài khoản theo từng role trong hệ thống.</p>
+                    </div>
+                </div>
+                <div class="role-list">
+                    <div class="role-row"><span>Member</span><strong>{{ statistics.totalMembers }}</strong></div>
+                    <div class="role-row"><span>Librarian</span><strong>{{ statistics.totalLibrarians }}</strong></div>
+                    <div class="role-row"><span>Admin</span><strong>{{ statistics.totalAdmins }}</strong></div>
+                </div>
+            </div>
+
+            <div class="statistics-card">
+                <div class="card-title">
+                    <i class="bi bi-key"></i>
+                    <div>
+                        <h2>Loại tài khoản</h2>
+                        <p>Thống kê theo phương thức đăng nhập.</p>
+                    </div>
+                </div>
+                <div class="role-list">
+                    <div class="role-row"><span>Local</span><strong>{{ statistics.totalLocalAccounts }}</strong></div>
+                    <div class="role-row"><span>Google</span><strong>{{ statistics.totalGoogleAccounts }}</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cấu hình vận hành -->
+        <div class="statistics-card system-overview">
+            <div class="card-title">
+                <i class="bi bi-sliders"></i>
+                <div>
+                    <h2>Cấu hình vận hành hiện tại</h2>
+                    <p>Các quy định này được Admin cấu hình trong mục Quản lý hệ thống.</p>
+                </div>
+            </div>
+            <div class="system-policy-grid">
+                <div class="policy-item"><span>Tên thư viện</span><strong>{{ statistics.libraryName }}</strong></div>
+                <div class="policy-item">
+                    <span>Trạng thái yêu cầu mượn</span>
+                    <strong [class.text-success]="statistics.allowBorrowRequest"
+                        [class.text-danger]="!statistics.allowBorrowRequest">
+                        {{ statistics.allowBorrowRequest ? 'Đang mở' : 'Đang tắt' }}
+                    </strong>
+                </div>
+                <div class="policy-item"><span>Số sách tối đa</span><strong>{{ statistics.maxBorrowBooks }}
+                        quyển</strong></div>
+                <div class="policy-item"><span>Số ngày mượn tối đa</span><strong>{{ statistics.maxBorrowDays }}
+                        ngày</strong></div>
+                <div class="policy-item"><span>Phí phạt/ngày</span><strong>{{ statistics.overdueFinePerDay | number }}
+                        VNĐ</strong></div>
+                <div class="policy-item"><span>Cập nhật cấu hình</span><strong>{{ statistics.updatedAt |
+                        date:'dd/MM/yyyy HH:mm' }}</strong></div>
+            </div>
+        </div>
+    </div>
+</div>

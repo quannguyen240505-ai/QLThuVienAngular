@@ -21,6 +21,7 @@ import { BorrowHistory } from './pages/borrow-history/borrow-history';
 import { ManageBorrowsComponent } from './pages/manage-borrows/manage-borrows';
 import { BorrowRequestPage } from './pages/borrow-request/borrow-request';
 import { OverdueBooksComponent } from './pages/overdue-books/overdue-books';
+import { StatisticsComponent } from './pages/statistics/statistics';
 
 export const routes: Routes = [
   {
@@ -136,6 +137,11 @@ export const routes: Routes = [
         path: 'borrow-request',
         component: BorrowRequestPage,
         title: 'Trạng thái yêu cầu mượn'
+      },
+      {
+        path: 'statistics',
+        component: StatisticsComponent,
+        title: 'Thống kê hoạt động'
       }
 
     ]
