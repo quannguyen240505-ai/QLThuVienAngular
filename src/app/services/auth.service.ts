@@ -10,7 +10,7 @@ import { ResetPasswordRequest } from '../models/reset-password-request';
 import { ExchangeSocialCodeRequest } from '../models/exchange-social-code-request';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private readonly apiUrl = 'https://localhost:7067/api/Auth';
@@ -55,6 +55,10 @@ export class AuthService {
     return true;
   }
 
+  getToken(): string {
+    return localStorage.getItem('authToken') ?? '';
+  }
+
   getUsername(): string {
     return localStorage.getItem('username') ?? '';
   }
@@ -80,19 +84,19 @@ export class AuthService {
   loginWithGoogle(): void {
     window.location.href = `${this.apiUrl}/google-login`;
   }
-
-  exchangeSocialCode(data: ExchangeSocialCodeRequest): Observable<AuthResponse> {
+  exchangeSocialCode(data: ExchangeSocialCodeRequest) {
     return this.http.post<AuthResponse>(`${this.apiUrl}/exchange-social-code`, data);
   }
 
-  forgotPassword(data: ForgotPasswordRequest): Observable<any> {
-    return this.http.post(`${this.apiUrl}/forgot-password`, data, { responseType: 'text' });
+  forgotPassword(data: ForgotPasswordRequest) {
+    return this.http.post(`${this.apiUrl}/forgot-password`, data, {
+      responseType: 'text',
+    });
   }
 
-  resetPassword(data: ResetPasswordRequest): Observable<any> {
-    return this.http.post(`${this.apiUrl}/reset-password`, data, { responseType: 'text' });
-  }
-  getToken(): string | null {
-    return localStorage.getItem('authToken');
+  resetPassword(data: ResetPasswordRequest) {
+    return this.http.post(`${this.apiUrl}/reset-password`, data, {
+      responseType: 'text',
+    });
   }
 }
