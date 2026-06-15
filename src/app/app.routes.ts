@@ -11,7 +11,7 @@ import { SystemSettingsComponent } from './pages/system-settings/system-settings
 import { LibraryInfoComponent } from './pages/library-info/library-info';
 import { BooksComponent } from './pages/book/book';
 import { BookDetailComponent } from './pages/book-detail/book-detail';
-import { SearchBooksComponent } from './components/search-books/search-books';
+import { SearchBooksComponent } from './pages/search-books/search-books';
 import { ManageBooksComponent } from './pages/manage-books/manage-books';
 import { Readers } from './pages/readers/readers';
 import { ReaderCreate } from './pages/reader-create/reader-create';
