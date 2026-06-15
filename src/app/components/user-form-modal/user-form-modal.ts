@@ -1,5 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  inject,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { UserResponse } from '../../models/user-response';
@@ -11,13 +20,16 @@ import { UpdateUserRequest } from '../../models/update-user-request';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './user-form-modal.html',
-  styleUrl: './user-form-modal.css'
+  styleUrl: './user-form-modal.css',
 })
 export class UserFormModalComponent implements OnChanges {
   private fb = inject(FormBuilder);
+  private cdr = inject(ChangeDetectorRef);
 
   @Input() isOpen = false;
   @Input() editingUser: UserResponse | null = null;
+  @Input() apiErrorMessage = '';
+  @Input() isSaving = false;
 
   @Output() closeModal = new EventEmitter<void>();
   @Output() saveCreate = new EventEmitter<CreateUserRequest>();
@@ -29,7 +41,7 @@ export class UserFormModalComponent implements OnChanges {
     dateOfBirth: ['', Validators.required],
     password: ['', [Validators.minLength(6)]],
     role: ['Member', Validators.required],
-    isActive: [true]
+    isActive: [true],
   });
 
   get isEditMode(): boolean {
@@ -38,11 +50,23 @@ export class UserFormModalComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['editingUser'] || changes['isOpen']) {
-      this.loadFormData();
+      setTimeout(() => {
+        this.loadFormData();
+        this.cdr.detectChanges();
+      });
+    }
+
+    if (changes['apiErrorMessage'] || changes['isSaving']) {
+      setTimeout(() => {
+        this.cdr.detectChanges();
+      });
     }
   }
 
   submit(): void {
+    if (this.isSaving) {
+      return;
+    }
     this.clearPasswordValidatorByMode();
 
     if (this.userForm.invalid) {
@@ -56,12 +80,12 @@ export class UserFormModalComponent implements OnChanges {
         gmail: this.userForm.value.gmail ?? '',
         dateOfBirth: this.userForm.value.dateOfBirth ?? '',
         role: this.userForm.value.role ?? 'Member',
-        isActive: this.userForm.value.isActive ?? true
+        isActive: this.userForm.value.isActive ?? true,
       };
 
       this.saveUpdate.emit({
         id: this.editingUser.id,
-        data
+        data,
       });
 
       return;
@@ -73,13 +97,16 @@ export class UserFormModalComponent implements OnChanges {
       dateOfBirth: this.userForm.value.dateOfBirth ?? '',
       password: this.userForm.value.password ?? '',
       role: this.userForm.value.role ?? 'Member',
-      isActive: this.userForm.value.isActive ?? true
+      isActive: this.userForm.value.isActive ?? true,
     };
 
     this.saveCreate.emit(data);
   }
 
   close(): void {
+    if (this.isSaving) {
+      return;
+    }
     this.closeModal.emit();
   }
 
@@ -95,7 +122,7 @@ export class UserFormModalComponent implements OnChanges {
         dateOfBirth: this.formatDateForInput(this.editingUser.dateOfBirth),
         password: '',
         role: this.editingUser.role,
-        isActive: this.editingUser.isActive
+        isActive: this.editingUser.isActive,
       });
 
       this.userForm.get('password')?.clearValidators();
@@ -107,15 +134,14 @@ export class UserFormModalComponent implements OnChanges {
         dateOfBirth: this.getToday(),
         password: '',
         role: 'Member',
-        isActive: true
+        isActive: true,
       });
 
-      this.userForm.get('password')?.setValidators([
-        Validators.required,
-        Validators.minLength(6)
-      ]);
+      this.userForm.get('password')?.setValidators([Validators.required, Validators.minLength(6)]);
       this.userForm.get('password')?.updateValueAndValidity();
     }
+    this.userForm.updateValueAndValidity();
+    this.cdr.detectChanges();
   }
 
   private clearPasswordValidatorByMode(): void {
@@ -128,10 +154,7 @@ export class UserFormModalComponent implements OnChanges {
     if (this.isEditMode) {
       passwordControl.clearValidators();
     } else {
-      passwordControl.setValidators([
-        Validators.required,
-        Validators.minLength(6)
-      ]);
+      passwordControl.setValidators([Validators.required, Validators.minLength(6)]);
     }
 
     passwordControl.updateValueAndValidity();

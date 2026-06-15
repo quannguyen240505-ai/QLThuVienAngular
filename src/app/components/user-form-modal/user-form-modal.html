@@ -3,12 +3,19 @@
     <div class="modal-header-custom">
       <div>
         <h2>{{ isEditMode ? 'Cập nhật tài khoản' : 'Thêm tài khoản' }}</h2>
-        <p>{{ isEditMode ? 'Chỉnh sửa thông tin người dùng.' : 'Tạo tài khoản mới cho hệ thống.' }}</p>
+        <p>
+          {{ isEditMode ? 'Chỉnh sửa thông tin người dùng.' : 'Tạo tài khoản mới cho hệ thống.' }}
+        </p>
       </div>
 
       <button class="modal-close" type="button" (click)="close()">
         <i class="bi bi-x-lg"></i>
       </button>
+    </div>
+
+    <div class="modal-error" *ngIf="apiErrorMessage">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <span>{{ apiErrorMessage }}</span>
     </div>
 
     <form [formGroup]="userForm" (ngSubmit)="submit()">
@@ -17,8 +24,12 @@
           <label>Username</label>
           <input class="form-control" type="text" formControlName="username" />
 
-          <div class="validation-message"
-               *ngIf="userForm.get('username')?.touched && userForm.get('username')?.hasError('required')">
+          <div
+            class="validation-message"
+            *ngIf="
+              userForm.get('username')?.touched && userForm.get('username')?.hasError('required')
+            "
+          >
             Vui lòng nhập tên đăng nhập.
           </div>
         </div>
@@ -27,13 +38,17 @@
           <label>Gmail</label>
           <input class="form-control" type="email" formControlName="gmail" />
 
-          <div class="validation-message"
-               *ngIf="userForm.get('gmail')?.touched && userForm.get('gmail')?.hasError('required')">
+          <div
+            class="validation-message"
+            *ngIf="userForm.get('gmail')?.touched && userForm.get('gmail')?.hasError('required')"
+          >
             Vui lòng nhập Gmail.
           </div>
 
-          <div class="validation-message"
-               *ngIf="userForm.get('gmail')?.touched && userForm.get('gmail')?.hasError('email')">
+          <div
+            class="validation-message"
+            *ngIf="userForm.get('gmail')?.touched && userForm.get('gmail')?.hasError('email')"
+          >
             Gmail không hợp lệ.
           </div>
         </div>
@@ -42,8 +57,13 @@
           <label>Ngày sinh</label>
           <input class="form-control" type="date" formControlName="dateOfBirth" />
 
-          <div class="validation-message"
-               *ngIf="userForm.get('dateOfBirth')?.touched && userForm.get('dateOfBirth')?.hasError('required')">
+          <div
+            class="validation-message"
+            *ngIf="
+              userForm.get('dateOfBirth')?.touched &&
+              userForm.get('dateOfBirth')?.hasError('required')
+            "
+          >
             Vui lòng chọn ngày sinh.
           </div>
         </div>
@@ -52,13 +72,21 @@
           <label>Mật khẩu</label>
           <input class="form-control" type="password" formControlName="password" />
 
-          <div class="validation-message"
-               *ngIf="userForm.get('password')?.touched && userForm.get('password')?.hasError('required')">
+          <div
+            class="validation-message"
+            *ngIf="
+              userForm.get('password')?.touched && userForm.get('password')?.hasError('required')
+            "
+          >
             Vui lòng nhập mật khẩu.
           </div>
 
-          <div class="validation-message"
-               *ngIf="userForm.get('password')?.touched && userForm.get('password')?.hasError('minlength')">
+          <div
+            class="validation-message"
+            *ngIf="
+              userForm.get('password')?.touched && userForm.get('password')?.hasError('minlength')
+            "
+          >
             Mật khẩu phải có ít nhất 6 ký tự.
           </div>
         </div>
@@ -81,13 +109,13 @@
       </div>
 
       <div class="modal-actions">
-        <button class="admin-secondary-btn" type="button" (click)="close()">
+        <button class="admin-secondary-btn" type="button" (click)="close()" [disabled]="isSaving">
           Hủy
         </button>
 
-        <button class="admin-primary-btn" type="submit">
-          <i class="bi bi-save"></i>
-          {{ isEditMode ? 'Cập nhật' : 'Thêm mới' }}
+        <button class="admin-primary-btn" type="submit" [disabled]="isSaving">
+          <i class="bi" [ngClass]="isSaving ? 'bi-arrow-clockwise spin' : 'bi-save'"></i>
+          {{ isSaving ? 'Đang lưu...' : isEditMode ? 'Cập nhật' : 'Thêm mới' }}
         </button>
       </div>
     </form>

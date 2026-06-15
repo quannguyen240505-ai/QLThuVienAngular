@@ -185,3 +185,43 @@ select.form-control {
         grid-template-columns: 1fr;
     }
 }
+/* ===== API ERROR INSIDE MODAL ===== */
+
+.modal-error {
+    margin: -6px 0 18px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: #fee2e2;
+    color: #b91c1c;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.45;
+}
+
+.modal-error i {
+    margin-top: 1px;
+    flex-shrink: 0;
+}
+
+button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.spin {
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
