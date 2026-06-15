@@ -1,5 +1,4 @@
 <div class="sidebar-card" [class.collapsed]="isCollapsed">
-
   <div class="sidebar-header">
     <div class="brand">
       <div class="brand-icon">
@@ -23,10 +22,14 @@
   </div>
 
   <nav class="menu">
-
     <div class="menu-title">Khách</div>
 
-    <a class="menu-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <a
+      class="menu-link"
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
       <i class="bi bi-house-door"></i>
       <span>Trang chủ</span>
     </a>
@@ -67,6 +70,10 @@
       <a class="menu-link" routerLink="/request-status" routerLinkActive="active">
         <i class="bi bi-hourglass-split"></i>
         <span>Trạng thái yêu cầu</span>
+      </a>
+      <a class="menu-link" routerLink="/profile" routerLinkActive="active">
+        <i class="bi bi-person-circle"></i>
+        <span>Tài khoản của tôi</span>
       </a>
     </ng-container>
 
@@ -112,28 +119,28 @@
         <span>Thống kê hoạt động</span>
       </a>
     </ng-container>
-
   </nav>
 
   <div class="sidebar-bottom">
-
-    <button *ngIf="isLoggedIn" class="menu-link logout logout-button" type="button" (click)="logout()">
+    <button
+      *ngIf="isLoggedIn"
+      class="menu-link logout logout-button"
+      type="button"
+      (click)="logout()"
+    >
       <i class="bi bi-box-arrow-left"></i>
       <span>Đăng xuất</span>
     </button>
 
     <div class="dark-mode">
-        <div>
-            <i class="bi bi-moon"></i>
-            <span>Dark Mode</span>
-        </div>
-        <label class="switch">
-            <input
-                type="checkbox"
-                [checked]="isDarkMode"
-                (change)="toggleDarkMode()" />
-            <span></span>
-        </label>
+      <div>
+        <i class="bi bi-moon"></i>
+        <span>Dark Mode</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" [checked]="isDarkMode" (change)="toggleDarkMode()" />
+        <span></span>
+      </label>
     </div>
   </div>
 </div>

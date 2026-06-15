@@ -1,0 +1,210 @@
+<div class="profile-page">
+  <div class="profile-header">
+    <div class="profile-user">
+      <div class="profile-avatar">
+        {{ getAvatarText() }}
+      </div>
+
+      <div>
+        <span class="profile-label">Tài khoản cá nhân</span>
+        <h1>{{ username }}</h1>
+        <p>Quản lý thông tin cá nhân và bảo mật tài khoản.</p>
+      </div>
+    </div>
+
+    <div class="profile-status">
+      <span class="role-badge">{{ role }}</span>
+
+      <span class="provider-badge" [ngClass]="isGoogleAccount ? 'google' : 'local'">
+        {{ isGoogleAccount ? 'Google' : 'Local' }}
+      </span>
+
+      <span class="status-badge" [ngClass]="isActive ? 'active' : 'locked'">
+        {{ isActive ? 'Hoạt động' : 'Đã khóa' }}
+      </span>
+    </div>
+  </div>
+
+  <div class="profile-alert success" *ngIf="successMessage">
+    <i class="bi bi-check-circle"></i>
+    {{ successMessage }}
+  </div>
+
+  <div class="profile-alert error" *ngIf="errorMessage">
+    <i class="bi bi-exclamation-triangle"></i>
+    {{ errorMessage }}
+  </div>
+
+  <div class="profile-loading" *ngIf="isLoading">
+    <i class="bi bi-arrow-clockwise spin"></i>
+    Đang tải thông tin tài khoản...
+  </div>
+
+  <div class="profile-grid" *ngIf="!isLoading">
+    <div class="profile-card">
+      <div class="card-title">
+        <div>
+          <h2>Thông tin cá nhân</h2>
+          <p>Cập nhật Gmail và ngày sinh của bạn.</p>
+        </div>
+        <i class="bi bi-person-vcard"></i>
+      </div>
+
+      <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+        <div class="form-group">
+          <label>Gmail</label>
+          <input
+            class="form-control"
+            type="email"
+            formControlName="gmail"
+            placeholder="Nhập Gmail"
+          />
+
+          <div
+            class="validation-message"
+            *ngIf="
+              profileForm.get('gmail')?.touched && profileForm.get('gmail')?.hasError('required')
+            "
+          >
+            Vui lòng nhập Gmail.
+          </div>
+          <div class="hint-message" *ngIf="isGoogleAccount">
+            Tài khoản Google không thể thay đổi Gmail trong hệ thống.
+          </div>
+
+          <div
+            class="validation-message"
+            *ngIf="profileForm.get('gmail')?.touched && profileForm.get('gmail')?.hasError('email')"
+          >
+            Gmail không hợp lệ.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Ngày sinh</label>
+          <input class="form-control" type="date" formControlName="dateOfBirth" />
+
+          <div
+            class="validation-message"
+            *ngIf="
+              profileForm.get('dateOfBirth')?.touched &&
+              profileForm.get('dateOfBirth')?.hasError('required')
+            "
+          >
+            Vui lòng chọn ngày sinh.
+          </div>
+        </div>
+
+        <div class="info-box">
+          <div>
+            <span>Ngày tạo tài khoản</span>
+            <strong>{{ createdAt | date: 'dd/MM/yyyy HH:mm' }}</strong>
+          </div>
+        </div>
+
+        <button class="primary-btn" type="submit" [disabled]="isSavingProfile">
+          <i class="bi" [ngClass]="isSavingProfile ? 'bi-arrow-clockwise spin' : 'bi-save'"> </i>
+          {{ isSavingProfile ? 'Đang lưu...' : 'Lưu thông tin' }}
+        </button>
+      </form>
+    </div>
+
+    <div class="profile-card">
+      <div class="card-title">
+        <div>
+          <h2>Đổi mật khẩu</h2>
+          <p>Cập nhật mật khẩu đăng nhập hệ thống.</p>
+        </div>
+        <i class="bi bi-shield-lock"></i>
+      </div>
+
+      <div class="google-note" *ngIf="isGoogleAccount">
+        <i class="bi bi-google"></i>
+        <div>
+          <strong>Tài khoản Google</strong>
+          <p>
+            Tài khoản này đăng nhập bằng Google nên không thể đổi mật khẩu trong hệ thống. Vui lòng
+            quản lý mật khẩu trong tài khoản Google của bạn.
+          </p>
+        </div>
+      </div>
+
+      <form [formGroup]="passwordForm" *ngIf="!isGoogleAccount" (ngSubmit)="changePassword()">
+        <div class="form-group">
+          <label>Mật khẩu hiện tại</label>
+          <input
+            class="form-control"
+            type="password"
+            formControlName="currentPassword"
+            placeholder="Nhập mật khẩu hiện tại"
+          />
+
+          <div
+            class="validation-message"
+            *ngIf="
+              passwordForm.get('currentPassword')?.touched &&
+              passwordForm.get('currentPassword')?.hasError('required')
+            "
+          >
+            Vui lòng nhập mật khẩu hiện tại.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Mật khẩu mới</label>
+          <input
+            class="form-control"
+            type="password"
+            formControlName="newPassword"
+            placeholder="Nhập mật khẩu mới"
+          />
+
+          <div
+            class="validation-message"
+            *ngIf="
+              passwordForm.get('newPassword')?.touched &&
+              passwordForm.get('newPassword')?.hasError('required')
+            "
+          >
+            Vui lòng nhập mật khẩu mới.
+          </div>
+
+          <div
+            class="validation-message"
+            *ngIf="
+              passwordForm.get('newPassword')?.touched &&
+              passwordForm.get('newPassword')?.hasError('minlength')
+            "
+          >
+            Mật khẩu mới phải có ít nhất 6 ký tự.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Xác nhận mật khẩu mới</label>
+          <input
+            class="form-control"
+            type="password"
+            formControlName="confirmNewPassword"
+            placeholder="Nhập lại mật khẩu mới"
+          />
+
+          <div
+            class="validation-message"
+            *ngIf="
+              passwordForm.get('confirmNewPassword')?.touched &&
+              passwordForm.get('confirmNewPassword')?.hasError('required')
+            "
+          >
+            Vui lòng xác nhận mật khẩu mới.
+          </div>
+        </div>
+
+        <button class="warning-btn" type="submit" [disabled]="isChangingPassword">
+          <i class="bi" [ngClass]="isChangingPassword ? 'bi-arrow-clockwise spin' : 'bi-key'"> </i>
+          {{ isChangingPassword ? 'Đang đổi...' : 'Đổi mật khẩu' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

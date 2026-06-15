@@ -9,6 +9,7 @@ import { SocialLoginSuccessComponent } from './pages/social-login-success/social
 import { AccountsComponent } from './pages/accounts/accounts';
 import { SystemSettingsComponent } from './pages/system-settings/system-settings';
 import { LibraryInfoComponent } from './pages/library-info/library-info';
+import { ProfileComponent } from './pages/profile/profile';
 
 export const routes: Routes = [
   {
@@ -18,48 +19,53 @@ export const routes: Routes = [
       {
         path: '',
         component: HomeComponent,
-        title: 'Thư viện Đại học - QNU'
+        title: 'Thư viện Đại học - QNU',
       },
-       {
+      {
         path: 'login',
         component: LoginComponent,
-        title: 'Đăng nhập'
+        title: 'Đăng nhập',
       },
       {
         path: 'register',
         component: RegisterComponent,
-        title: 'Đăng ký'
+        title: 'Đăng ký',
       },
       {
         path: 'forgot-password',
         component: ForgotPasswordComponent,
-        title: 'Quên mật khẩu'
+        title: 'Quên mật khẩu',
       },
       {
         path: 'reset-password',
         component: ResetPasswordComponent,
-        title: 'Đặt lại mật khẩu'
+        title: 'Đặt lại mật khẩu',
       },
       {
         path: 'social-login-success',
         component: SocialLoginSuccessComponent,
-        title: 'Đang đăng nhập'
+        title: 'Đang đăng nhập',
       },
       {
-         path: 'accounts',
+        path: 'accounts',
         component: AccountsComponent,
-        title: 'Quản lý tài khoản'
+        title: 'Quản lý tài khoản',
       },
       {
         path: 'system',
         component: SystemSettingsComponent,
-        title: 'Quản lý hệ thống'
+        title: 'Quản lý hệ thống',
       },
       {
         path: 'library-info',
         component: LibraryInfoComponent,
-        title: 'Thông tin thư viện'
-      }
-    ]
-  }
+        title: 'Thông tin thư viện',
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        title: 'Tài khoản của tôi',
+      },
+    ],
+  },
 ];
