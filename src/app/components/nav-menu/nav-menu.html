@@ -34,7 +34,12 @@
       <span>Trang chủ</span>
     </a>
 
-    <a class="menu-link" routerLink="/books" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <a
+      class="menu-link"
+      routerLink="/books"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
       <i class="bi bi-book"></i>
       <span>Danh sách sách</span>
     </a>
@@ -62,7 +67,7 @@
         <span>Gửi yêu cầu mượn</span>
       </a>
 
-      <a routerLink="/return-books" routerLinkActive="active" class="menu-link">
+      <a class="menu-link" routerLink="/return-books" routerLinkActive="active">
         <i class="bi bi-arrow-return-left"></i>
         <span>Trả sách</span>
       </a>
@@ -75,7 +80,19 @@
       <a class="menu-link" routerLink="/borrow-request" routerLinkActive="active">
         <i class="bi bi-hourglass-split"></i>
         <span>Trạng thái yêu cầu</span>
+        
       </a>
+      <a class="menu-link" routerLink="/notifications" routerLinkActive="active">
+  <i class="bi bi-bell"></i>
+  <span>Thông báo</span>
+      </a>
+
+      <!-- Menu mới: Sách yêu thích -->
+      <a class="menu-link" routerLink="/favorite-books" routerLinkActive="active">
+        <i class="bi bi-heart"></i>
+        <span>Sách yêu thích</span>
+      </a>
+
       <a class="menu-link" routerLink="/profile" routerLinkActive="active">
         <i class="bi bi-person-circle"></i>
         <span>Tài khoản của tôi</span>
@@ -104,17 +121,18 @@
         <i class="bi bi-exclamation-triangle"></i>
         <span>Sách quá hạn</span>
       </a>
+
       <a class="menu-link" routerLink="/statistics" routerLinkActive="active">
         <i class="bi bi-bar-chart"></i>
         <span>Thống kê hoạt động</span>
       </a>
 
-      <a routerLink="/readers" routerLinkActive="active" class="menu-link">
+      <a class="menu-link" routerLink="/readers" routerLinkActive="active">
         <i class="bi bi-people"></i>
         <span>Danh sách độc giả</span>
       </a>
 
-      <a routerLink="/readers/create" routerLinkActive="active" class="menu-link">
+      <a class="menu-link" routerLink="/readers/create" routerLinkActive="active">
         <i class="bi bi-person-plus"></i>
         <span>Thêm độc giả</span>
       </a>
@@ -137,7 +155,6 @@
         <i class="bi bi-bar-chart"></i>
         <span>Thống kê hoạt động</span>
       </a>
-
     </ng-container>
   </nav>
 
@@ -157,6 +174,7 @@
         <i class="bi bi-moon"></i>
         <span>Dark Mode</span>
       </div>
+
       <label class="switch">
         <input type="checkbox" [checked]="isDarkMode" (change)="toggleDarkMode()" />
         <span></span>

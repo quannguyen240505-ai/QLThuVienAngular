@@ -1,3 +1,4 @@
+import { FavoriteBookService } from '../../services/favorite-book.service';
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
@@ -27,10 +28,12 @@ export class BooksComponent implements OnInit {
   public authService = inject(AuthService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private favoriteService = inject(FavoriteBookService);
 
   ngOnInit(): void {
-    this.loadBooks();
-  }
+  this.loadBooks();
+  this.favoriteService.loadFavorites().subscribe();
+}
 
   loadBooks(): void {
     this.loading = true;
@@ -99,4 +102,11 @@ export class BooksComponent implements OnInit {
       this.router.navigate(['/books', bookId]);
     }
   }
+  toggleFavorite(book: Book): void {
+  this.favoriteService.toggleFavorite(book);
+}
+
+isFavorite(bookId: number): boolean {
+  return this.favoriteService.isFavorite(bookId);
+}
 }

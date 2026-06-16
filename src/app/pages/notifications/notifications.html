@@ -1,0 +1,80 @@
+<div class="notifications-page">
+  <div class="page-header">
+    <div>
+      <h2>Thông báo</h2>
+      <p>Theo dõi các thông báo trong hệ thống thư viện</p>
+    </div>
+
+    <button
+      class="btn-read-all"
+      type="button"
+      *ngIf="getUnreadCount() > 0"
+      (click)="markAllAsRead()"
+    >
+      Đánh dấu tất cả đã đọc
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-box">
+    Đang tải thông báo...
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="!loading && errorMessage" class="empty-box">
+    <i class="bi bi-exclamation-circle"></i>
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <!-- Danh sách thông báo -->
+  <div
+    *ngIf="!loading && !errorMessage && notifications.length > 0"
+    class="notification-list"
+  >
+    <div
+      class="notification-card"
+      *ngFor="let item of notifications"
+      [class.unread]="!item.isRead"
+      (click)="markAsRead(item)"
+    >
+      <div class="notification-icon">
+        <i
+          class="bi"
+          [ngClass]="{
+            'bi-clock-history': item.type === 'DueSoon',
+            'bi-check-circle': item.type === 'BorrowApproved',
+            'bi-exclamation-triangle': item.type === 'Overdue',
+            'bi-bell': item.type !== 'DueSoon' && item.type !== 'BorrowApproved' && item.type !== 'Overdue'
+          }"
+        ></i>
+      </div>
+
+      <div class="notification-content">
+        <div class="notification-top">
+          <h3>{{ item.title }}</h3>
+
+          <span *ngIf="!item.isRead" class="new-badge">
+            Mới
+          </span>
+        </div>
+
+        <p>{{ item.message }}</p>
+
+        <span class="time" [title]="item.createdAt | date:'dd/MM/yyyy HH:mm:ss'">
+          {{ getTimeAgo(item.createdAt) }}
+          •
+          {{ item.createdAt | date:'dd/MM/yyyy HH:mm' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Không có thông báo -->
+  <div
+    *ngIf="!loading && !errorMessage && notifications.length === 0"
+    class="empty-box"
+  >
+    <i class="bi bi-bell-slash"></i>
+    <p>Chưa có thông báo nào.</p>
+  </div>
+</div>

@@ -1,6 +1,10 @@
 <div class="page">
   <aside class="sidebar" [class.collapsed]="isCollapsed">
-    <app-nav-menu [isCollapsed]="isCollapsed" (toggleSidebar)="toggleSidebar()"> </app-nav-menu>
+    <app-nav-menu
+      [isCollapsed]="isCollapsed"
+      (toggleSidebar)="toggleSidebar()"
+    >
+    </app-nav-menu>
   </aside>
 
   <main class="main">
@@ -11,9 +15,18 @@
       </div>
 
       <div class="topbar-right">
-        <button class="notification-btn" type="button">
-          <i class="bi bi-bell"></i>
-        </button>
+      <button
+  class="notification-btn"
+  type="button"
+  title="Thông báo"
+  (click)="openNotifications()"
+>
+  <i class="bi bi-bell"></i>
+
+  <span class="notification-badge" *ngIf="unreadCount > 0">
+    {{ unreadCount }}
+  </span>
+</button>
 
         <div class="user-box" *ngIf="isLoggedIn; else loginButton">
           <div class="user-avatar">

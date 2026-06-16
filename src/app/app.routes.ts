@@ -16,6 +16,8 @@ import { BooksComponent } from './pages/book/book';
 import { BookDetailComponent } from './pages/book-detail/book-detail';
 import { SearchBooksComponent } from './pages/search-books/search-books';
 import { ManageBooksComponent } from './pages/manage-books/manage-books';
+import { FavoriteBooks } from './pages/favorite-books/favorite-books';
+import { Notifications } from './pages/notifications/notifications';
 
 import { Readers } from './pages/readers/readers';
 import { ReaderCreate } from './pages/reader-create/reader-create';
@@ -106,6 +108,16 @@ export const routes: Routes = [
         component: ManageBooksComponent,
         title: 'Quản lý sách',
       },
+      {
+        path: 'favorite-books',
+        component: FavoriteBooks,
+        title: 'Sách yêu thích',
+      },
+      {
+  path: 'notifications',
+  component: Notifications,
+  title: 'Thông báo',
+},
 
       {
         path: 'readers',

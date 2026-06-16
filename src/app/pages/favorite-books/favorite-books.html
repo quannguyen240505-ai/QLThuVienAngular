@@ -1,0 +1,34 @@
+<div class="favorite-page">
+  <div class="page-header">
+    <h2>Sách yêu thích</h2>
+    <p>Danh sách các sách bạn đã đánh dấu yêu thích</p>
+  </div>
+
+  <div class="book-grid" *ngIf="favorites.length > 0; else emptyFavorite">
+    <div class="book-card" *ngFor="let book of favorites">
+      <div class="book-image">
+        <img *ngIf="book.coverImageUrl" [src]="book.coverImageUrl" alt="Book image">
+
+        <div *ngIf="!book.coverImageUrl" class="placeholder-cover">
+          <i class="bi bi-book"></i>
+        </div>
+      </div>
+
+      <div class="book-info">
+        <h3>{{ book.title }}</h3>
+        <p>{{ book.author }}</p>
+        <span>Đã thêm: {{ book.createdAt | date:'dd/MM/yyyy' }}</span>
+      </div>
+
+      <button class="btn-remove" (click)="removeFavorite(book.bookId)">
+        Bỏ yêu thích
+      </button>
+    </div>
+  </div>
+
+  <ng-template #emptyFavorite>
+    <div class="empty-box">
+      Bạn chưa có sách yêu thích nào.
+    </div>
+  </ng-template>
+</div>
